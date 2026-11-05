@@ -1,9 +1,3 @@
-const SONGS = [
-  {cover:'covers/blue.png', video:'videos/blue.mp4', title:'blue', year:'2024'},
-  {cover:'covers/loathe-crackers.png', video:'videos/loathe-crackers.mp4', title:'loathe crackers (for breakfast my love)', year:'2025'},
-  {cover:'covers/selective-violence.png', video:'videos/selective-violence.mp4', title:'selective violence', year:'2024'},
-];
-
 const ARTWORKS = [
   {img:'artworks/wfore.png', title:'wfore', medium:'digital art, digital layering', year:'2026'},
   {img:'artworks/connect_watercolor.png', title:'connect_1', medium:'"connect" processed on Canva', year:'2026'},
