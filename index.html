@@ -82,6 +82,36 @@
   .search .clear{position:absolute;right:10px;top:6px;color:#e8f3f4;cursor:pointer;display:none;font-size:14px}
   .search .clear.on{display:block}
 
+  /* ---------- TICKER (runs non-stop, same row as the search bar) ---------- */
+  .ticker{
+    position:absolute;
+    top:90px;      /* just below the search bar row */
+    left:0;
+    right:0;       /* edge to edge */
+    height:40px;
+    z-index:20;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+  }
+  .ticker-track{
+    display:flex;
+    flex:none;
+    white-space:nowrap;
+    animation:ticker 45s linear infinite;
+  }
+  .ticker-track span{
+    padding-right:70px;
+    font:bold 30px Verdana,Tahoma,sans-serif;
+    color:var(--red);
+    /* bright green outline: change #00ff3c for another color, 1.5px for thickness */
+    text-shadow:
+      -1.5px -1.5px 0 #00ff3c,  0   -1.5px 0 #00ff3c,  1.5px -1.5px 0 #00ff3c,
+      -1.5px  0     0 #00ff3c,                          1.5px  0     0 #00ff3c,
+      -1.5px  1.5px 0 #00ff3c,  0    1.5px 0 #00ff3c,  1.5px  1.5px 0 #00ff3c;
+  }
+  @keyframes ticker{to{transform:translateX(-50%)}}
+
   /* ---------- MAIN: scroll section (left) + stage (right) ---------- */
   .lower{
     width:100%;
@@ -279,10 +309,23 @@
     width:100%;margin-top:auto;
     padding:5px 12px 6px;
     border-top:1px solid #ddd;
-    text-align:center;color:#888;font-size:13px;line-height:1.4;background:#fff;
+    text-align:center;color:#888;font-size:14px;line-height:1.4;background:#fff;
   }
   footer a:hover,footer .ownerlink:hover{color:var(--red)}
-  footer .ownerlink{cursor:pointer}
+  /* footer .ownerlink{cursor:pointer} */
+  footer .ownerlink{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- LOGIN BOX ---------- */
+  .login{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+  .login[hidden]{display:none}
+  .login-box{background:#fff;border:1px solid #333;box-shadow:-8px 8px 0 rgba(0,0,0,.25);padding:18px;width:min(320px,100%);display:flex;flex-direction:column;gap:8px}
+  .login-box label{font:bold 12px Verdana,sans-serif;color:#555}
+  .login-box input{width:100%;border:1px solid #333;padding:8px 10px;font:15px Georgia,serif;outline:none}
+  .login-box input:focus{border-color:var(--teal);box-shadow:0 0 0 2px #cfe3e6}
+  .login-msg{min-height:16px;color:var(--red);font-size:11px}
+  .login-actions{display:flex;gap:10px}
+  .login-actions button{font:bold 12px Verdana,sans-serif;padding:6px 18px;cursor:pointer;border:1px solid var(--teal);background:#fff;color:var(--teal)}
+  .login-actions button.go{background:var(--teal);color:#fff}
 
   /* ---------- MODE LABEL (top right) ---------- */
   .mode-label{
@@ -340,7 +383,7 @@
       min-height:0;
     }
     .panel h3{font-size:24px;margin-bottom:8px;margin-top:6px}
-    .panel h3 small{font-size:11px}
+    .panel h3 small{font-size:14px}
 
     /* the list takes whatever height is left on the screen */
     .news{flex:1 1 0;height:auto;min-height:110px;font-size:17px}
@@ -358,6 +401,8 @@
 
   @media(max-width:760px){
     .search{top:36px;left:auto;right:8px;width:62vw}
+    .ticker{top:74px;height:32px}
+    .ticker-track span{font-size:16px}
     .lower{flex-direction:column;margin-top:-30px}
     .panel{flex:none;width:100%}
     .viewer{position:relative;right:auto;top:auto;margin-top:14px;box-shadow:none}
@@ -381,6 +426,12 @@
   <datalist id="titleList"></datalist>
 </div>
 
+<div class="ticker" aria-label="tagline">
+  <div class="ticker-track" id="tickerTrack">
+    <span>AI a.k.a aliɘn !ntɘlligɘnce can nvr copy .    i write guided by the 90sgrungegenz-restless-mentally-ill-unregulated-self-loathing spirit</span>
+  </div>
+</div>
+
 <div class="hero-wrap">
   <div class="hero" id="hero"></div>
   <div class="stickers" id="stickers"></div>
@@ -389,7 +440,7 @@
 <div class="lower">
 
   <div class="panel">
-    <h3>SOMEART&amp;MINDVOMIT<small>hɘll0 ! irashaimasen !</small></h3>
+    <h3>SOMɘART&amp;MINDVOMIT<small>hɘllo ! 6dchair desuuu. byɘ !</small></h3>
 
     <div class="news" id="news"></div>
 
@@ -404,7 +455,7 @@
     </div>
 
     <!-- replace you@example.com (in both places) with your real email address -->
-    <div class="note">email me: <a class="mail" href="mailto:you@example.com">you@example.com</a></div>
+    <div class="note">email: <a class="mail" href="mailto:6dinbox@gmail.com">6dinbox@gmail.com</a></div>
   </div>
 
   <!-- the vacant right side: opened art / songs / blog posts appear here -->
@@ -427,10 +478,10 @@
 </div>
 
 <footer>
-  © 2026 6dchair
+  © 2022 6dchair //
   <!-- <a href="https://instagram.com/6dchairr" target="_blank" rel="noopener noreferrer">Instagram</a> · -->
-  <a href="https://tiktok.com/@6dchair" target="_blank" rel="noopener noreferrer">TikTok</a> ·
-  <a href="https://soundcloud.com/6dchair" target="_blank" rel="noopener noreferrer">SoundCloud</a> ·
+  <!-- <a href="https://tiktok.com/@6dchair" target="_blank" rel="noopener noreferrer">TikTok</a> ·
+  <a href="https://soundcloud.com/6dchair" target="_blank" rel="noopener noreferrer">SoundCloud</a> · -->
   <!-- <a href="https://youtube.com/@6dchair" target="_blank" rel="noopener noreferrer">YouTube</a> -->
   <span id="ownerBar"></span>
 </footer>
@@ -450,6 +501,19 @@
   </div>
 </aside>
 
+<!-- ---------- LOGIN BOX (replaces the browser's built-in prompt) ---------- -->
+<div class="login" id="login" hidden>
+  <form class="login-box" id="loginForm" autocomplete="off">
+    <label for="loginPass">owner passcode</label>
+    <input id="loginPass" type="password" autocomplete="current-password">
+    <div class="login-msg" id="loginMsg"></div>
+    <div class="login-actions">
+      <button type="submit" class="go">enter</button>
+      <button type="button" id="loginCancel">cancel</button>
+    </div>
+  </form>
+</div>
+
 <!-- ARTWORKS come from generated-media.js (same folder, made by generate_media.py).
      SONGS are typed in the script below.
      Published blog posts come from blog-entries.js (optional, made with "export blog for site"). -->
@@ -463,7 +527,7 @@ const fmtDateTime = iso => iso ? new Date(iso).toLocaleString('en-US',{year:'num
 const fmtDate = iso => new Date(iso).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
 
 /* ---------- OWNER MODE ----------
-   Click "owner" in the footer (or open index.html#owner and reload) and enter
+   Click the login link in the footer (or open index.html#owner) and enter
    the passcode. CHANGE THE PASSCODE BELOW. This is a soft lock, not real security. */
 const OWNER_PASS = 'changeme';
 const OWNER_KEY  = 'sixd_owner';
@@ -471,14 +535,6 @@ const BLOG_KEY   = 'sixd_blog';
 
 let isOwner = false;
 try{ isOwner = localStorage.getItem(OWNER_KEY) === '1'; }catch(e){}
-
-if(location.hash === '#owner' && !isOwner){
-  const p = prompt('owner passcode');
-  if(p === OWNER_PASS){
-    isOwner = true;
-    try{ localStorage.setItem(OWNER_KEY,'1'); }catch(e){}
-  }
-}
 
 /* ---------- BLOG DATA ---------- */
 function loadBlog(){
@@ -524,10 +580,10 @@ const stage = $('stage'), vMedia = $('vMedia');
              opens the original, for videos whose owner blocks embedding
    Keep a comma after every line. To add a song, copy a line and edit it. */
 const SONGS = [
-  {title:'camp crashing', link:'https://soundcloud.com/6dchair/campcrashing?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
-  {title:'tempera on poly', link:'https://www.reddit.com/r/Songwriting/s/MzaBV5gsdX'},
-  {title:'numbness party', link:'https://soundcloud.com/6dchair/numbness_party_2022?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
-  {title:'but im a loser', link:'https://soundcloud.com/6dchair/but_im_a_loser_2025?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title:'camp crashing', link:'https://on.soundcloud.com/bbNb10XCZtgD21g5HV'},
+  {title:'tempera on poly', link:'https://www.tiktok.com/@6dchair/video/7684444379011910919?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
+  {title:'numbness party', link:'https://on.soundcloud.com/OGMOhCDTyi6GBR9aTD'},
+  {title:'but im a loser', link:'https://on.soundcloud.com/oeqFXjIQNGV3DF3Oll'},
 ];
 const songLink = it => /^https?:\/\//i.test(it.link || '') ? it.link : '';
 
@@ -981,18 +1037,45 @@ if(isOwner){
     location.reload();
   });
 }else{
-  $('ownerBar').innerHTML = ` · <span class="ownerlink" id="ownerIn">owner</span>`;
-  $('ownerIn').addEventListener('click', ()=>{
-    if(prompt('owner passcode') === OWNER_PASS){
-      try{ localStorage.setItem(OWNER_KEY,'1'); }catch(e){}
-      location.reload();
-    }
-  });
+  $('ownerBar').innerHTML = ` · <span class="ownerlink" id="ownerIn"> login if u r 6dchair</span>`;
+  $('ownerIn').addEventListener('click', openLogin);
 }
+
+/* ---------- LOGIN BOX ---------- */
+function openLogin(){
+  $('login').hidden = false;
+  $('loginMsg').textContent = '';
+  $('loginPass').value = '';
+  $('loginPass').focus();
+}
+function closeLogin(){ $('login').hidden = true; }
+
+$('loginCancel').addEventListener('click', closeLogin);
+$('login').addEventListener('click', e=>{ if(e.target.id === 'login') closeLogin(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !$('login').hidden) closeLogin(); });
+$('loginForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  if($('loginPass').value === OWNER_PASS){
+    try{ localStorage.setItem(OWNER_KEY,'1'); }catch(_){}
+    location.hash = '';
+    location.reload();
+  }else{
+    $('loginMsg').textContent = 'wrong passcode.';
+    $('loginPass').select();
+  }
+});
+
+/* ---------- TICKER: repeat the sentence so the loop is seamless ---------- */
+(function(){
+  const track = $('tickerTrack');
+  const first = track.firstElementChild;
+  for(let i = 0; i < 3; i++) track.appendChild(first.cloneNode(true));
+})();
 
 /* ---------- INIT ---------- */
 renderNews();
 refreshDatalist();
+if(location.hash === '#owner' && !isOwner) openLogin();
 </script>
 
 </body>

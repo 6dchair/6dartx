@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6dchair's</title>
+
+<style>
+  :root{
+    --ink:#000;
+    --paper:#fff;
+    --teal:#0f3f46;
+    --blue:#1b2a9a;
+    --grey:#8a8a8a;
+    --red:#C21E24;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{height:100%}
+
+  body{
+    background:var(--paper);
+    color:#222;
+    font-family:Verdana,Tahoma,Geneva,sans-serif;
+    font-size:12px;
+    line-height:1.5;
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    transition:padding-left .25s ease;
+  }
+
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    flex:none;
+    height:50vh;
+    min-height:340px;
+    background:var(--paper);
+    overflow:hidden;
+    clip-path:polygon(0 0,100% 0,100% 88%,78% 94%,58% 90%,40% 100%,18% 93%,0 98%);
+  }
+
+  /* ---------- HERO STICKERS (transparent PNG / WebP cutouts) ---------- */
+  .hero-wrap{position:relative;flex:none;overflow-x:clip}
+  .stickers{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .stickers .sticker{
+    position:absolute;
+    left:var(--x);
+    top:var(--y);
+    height:var(--h,45%);
+    width:auto;
+    transform:rotate(var(--r,0deg));
+    z-index:5;
+    user-select:none;
+    -webkit-user-drag:none;
+    pointer-events:none;
+  }
+
+  .logo{position:absolute;top:8px;left:10px;z-index:20;color:var(--paper);font-size:12px;font-family:Georgia,serif}
+
+  /* ---------- SEARCH ---------- */
+  .search{position:absolute;top:8px;left:auto;right:120px;z-index:20;width:min(460px,52vw)}
+  .search .mag{position:absolute;left:11px;top:8px;width:16px;height:16px;color:#e8f3f4;opacity:.7;pointer-events:none}
+  .search input{
+    width:100%;height:32px;
+    padding:0 30px 0 34px;
+    background:var(--teal);color:rgba(232,243,244,.85);
+    border:1px solid #6b8e93;
+    font:bold 14px Verdana,Tahoma,sans-serif;
+    outline:none;
+  }
+  .search input::placeholder{color:#e8f3f4;opacity:.55}
+  .search input:focus{border-color:var(--paper)}
+  /* hide the little dropdown triangle the browser adds for the suggestions list */
+  .search input::-webkit-calendar-picker-indicator,
+  .search input::-webkit-list-button{display:none !important;opacity:0}
+  .search .clear{position:absolute;right:10px;top:6px;color:#e8f3f4;cursor:pointer;display:none;font-size:14px}
+  .search .clear.on{display:block}
+
+  /* ---------- TICKER (runs non-stop, same row as the search bar) ---------- */
+  .ticker{
+    position:absolute;
+    top:90px;      /* just below the search bar row */
+    left:0;
+    right:0;       /* edge to edge */
+    height:40px;
+    z-index:20;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+  }
+  .ticker-track{
+    display:flex;
+    flex:none;
+    white-space:nowrap;
+    animation:ticker 45s linear infinite;
+  }
+  .ticker-track span{
+    padding-right:70px;
+    font:bold 30px Verdana,Tahoma,sans-serif;
+    color:var(--red);
+    /* bright green outline: change #00ff3c for another color, 1.5px for thickness */
+    text-shadow:
+      -1.5px -1.5px 0 #00ff3c,  0   -1.5px 0 #00ff3c,  1.5px -1.5px 0 #00ff3c,
+      -1.5px  0     0 #00ff3c,                          1.5px  0     0 #00ff3c,
+      -1.5px  1.5px 0 #00ff3c,  0    1.5px 0 #00ff3c,  1.5px  1.5px 0 #00ff3c;
+  }
+  @keyframes ticker{to{transform:translateX(-50%)}}
+
+  /* ---------- MAIN: scroll section (left) + stage (right) ---------- */
+  .lower{
+    width:100%;
+    max-width:1100px;
+    margin:-60px auto 0;
+    padding:0 20px 12px;
+    display:flex;
+    gap:24px;
+    align-items:stretch;
+    position:relative;
+  }
+
+  .panel{flex:0 0 460px;max-width:100%;position:relative;z-index:2}
+
+  .panel h3{
+    border-left:5px solid #777;
+    padding-left:6px;
+    font:bold 15px Arial,sans-serif;
+    line-height:1.1;
+    margin-bottom:12px;
+  }
+  .panel h3 small{display:block;font-size:9px;letter-spacing:.3px;color:#555;margin-top:2px;font-weight:normal}
+
+  .news{
+    position:relative;
+    height:270px;
+    overflow-y:scroll;
+    padding-right:8px;
+    font-size:15px;
+    line-height:1.45;
+  }
+  .news::-webkit-scrollbar{width:14px}
+  .news::-webkit-scrollbar-track{background:#eee;border-radius:2px}
+  .news::-webkit-scrollbar-thumb{background:#999;border-radius:2px;border:2px solid #eee}
+  .news::-webkit-scrollbar-thumb:hover{background:#777}
+  @supports not selector(::-webkit-scrollbar){
+    .news{scrollbar-width:auto;scrollbar-color:#999 #eee}
+  }
+  .news .grp{
+    font:bold 19px Georgia,serif;
+    color:#111;
+    border-bottom:2px solid #ccc;
+    margin-top:16px;
+    padding-bottom:2px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    cursor:pointer;
+  }
+  .news .grp:first-child{margin-top:0}
+  .news .grp .n{font:13px Verdana,sans-serif;color:#999;display:flex;align-items:center}
+  .news .plus{
+    width:22px;height:22px;margin-left:8px;
+    background:var(--teal);color:#fff;border:0;cursor:pointer;
+    font:bold 17px/20px Verdana,sans-serif;text-align:center;
+  }
+  .news .row{margin-top:7px;color:#777;cursor:pointer;display:flex;align-items:center;gap:10px}
+  .news .row .th{width:34px;height:34px;object-fit:cover;flex:none;filter:grayscale(1) contrast(1.3)}
+  .news .row b{flex:1;min-width:0;font-family:Georgia,serif;color:var(--blue);font-size:16px}
+  .news .row.song b{text-decoration:underline;text-underline-offset:3px}
+  .news .row.active b{color:var(--red);text-decoration:underline}
+  .news .row .by{font-size:12px;color:#aaa;white-space:nowrap}
+  .news .none{margin-top:7px;color:#aaa}
+  .news .more{margin-top:6px;color:var(--teal);font-size:13px;font-weight:bold;cursor:pointer}
+
+  .etc{border-left:5px solid #888;padding-left:6px}
+  .etc select{width:90px;height:20px;font:bold 11px Verdana,sans-serif;background:#fff;border:1px solid #333}
+  .note{margin-top:12px;color:#666;font-size:12px}
+  .note a.mail{text-decoration:underline;text-underline-offset:3px}
+
+  /* stage = the vacant right side; holds the decoration until something is opened */
+  .stage{flex:1 1 0;min-width:0;position:relative}
+  .scrap{position:relative;min-height:300px}
+  .scrap .s{position:absolute;left:var(--x);top:var(--y);height:var(--h);width:auto;transform:rotate(var(--r,0deg));user-select:none;pointer-events:none;-webkit-user-drag:none}
+
+  .viewer{
+    display:none;
+    position:absolute;
+    right:0;
+    top:70px;
+    max-width:100%;
+    z-index:3;
+    border:1px solid #333;
+    background:#fff;
+    padding:10px;
+    box-shadow:-6px 6px 0 rgba(0,0,0,.18);
+    user-select:none;
+  }
+  .viewer[data-k="blog"],.viewer[data-k="song"]{width:100%}
+  .stage.open .viewer{display:block}
+  .v-bar,.v-media img,.v-cap{cursor:grab}
+  .viewer.dragging,.viewer.dragging *{cursor:grabbing !important}
+  .v-media img{-webkit-user-drag:none}
+  .v-post{user-select:text;cursor:auto}
+  .v-bar .vr{display:flex;gap:16px}
+
+  /* double-click: full screen */
+  .viewer.full{
+    position:fixed;inset:0;top:0;right:0;
+    width:100%;max-width:none;
+    transform:none !important;
+    z-index:2000;
+    background:#000;border:0;box-shadow:none;
+    padding:16px;
+    display:flex;flex-direction:column;
+  }
+  .viewer.full .v-bar{color:#9fc3c8}
+  .viewer.full .v-bar,.viewer.full .v-media img,.viewer.full .v-cap{cursor:auto}
+  .viewer.full .v-media{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+  .viewer.full .v-media img{max-width:100%;max-height:calc(100vh - 130px);width:auto}
+  .viewer.full .v-media iframe{width:100%;height:100%;max-height:none}
+  .viewer.full .v-media iframe.tt{width:auto;aspect-ratio:9/16;max-width:100%}
+  .viewer.full .v-post{color:#eee;width:min(780px,100%);max-height:calc(100vh - 140px);font-size:17px}
+  .viewer.full .v-cap{border-top-color:#333}
+  .viewer.full .v-title{color:#fff}
+
+  .v-bar{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;font-weight:bold;color:var(--teal)}
+  .v-bar span{cursor:pointer}
+  #vNav{display:flex;gap:16px}
+  .v-media img{display:block;max-width:100%;max-height:max(120px,calc(var(--avail,520px) - 160px));margin:0 auto;background:#000}
+  .v-post{max-height:max(120px,calc(var(--avail,520px) - 160px));overflow-y:auto;font:15px/1.7 Georgia,serif;white-space:pre-wrap;color:#222;padding-right:6px}
+  .v-cap{margin-top:10px;border-top:1px solid #ddd;padding-top:8px}
+  .v-title{font:bold 18px Georgia,serif;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .v-sub{font-size:12px;color:var(--grey);margin-top:2px}
+  .v-actions{display:flex;gap:18px;margin-top:6px;font-size:12px;font-weight:bold}
+  .v-actions span{cursor:pointer;color:var(--teal)}
+  .v-actions a.listen{background:var(--teal);color:#fff;padding:5px 14px;font-size:12px}
+
+  .v-media .hint{font-size:11px;color:#888;margin-top:6px;white-space:normal}
+  /* "play on ..." card for songs that open the original */
+  .poster{position:relative;display:block;background:#000;height:max(200px,calc(var(--avail,520px) - 160px));cursor:pointer}
+  .poster img{display:block;width:100%;height:100%;object-fit:contain}
+  .poster .play{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    background:var(--red);color:#fff;font:bold 15px Verdana,sans-serif;
+    padding:12px 22px;white-space:nowrap;
+  }
+  /* embedded players (SoundCloud / YouTube / TikTok / Spotify) */
+  .v-media iframe{display:block;border:0;width:100%;background:#000;margin:0 auto}
+  .v-media iframe.yt{height:max(160px,calc(var(--avail,520px) - 160px))}
+  .v-media iframe.sc{height:min(450px,max(160px,calc(var(--avail,520px) - 160px)))}
+  .v-media iframe.sp{height:min(380px,max(160px,calc(var(--avail,520px) - 160px)))}
+  .v-media iframe.tt{width:auto;max-width:100%;aspect-ratio:9/16;height:max(300px,calc(var(--avail,520px) - 160px))}
+
+  /* ---------- BLOG EDITOR (slides in from the left) ---------- */
+  .editor{
+    position:fixed;top:0;bottom:0;left:0;
+    width:360px;max-width:100%;
+    background:#fff;
+    border-right:5px solid #777;
+    box-shadow:6px 0 24px rgba(0,0,0,.25);
+    z-index:1100;
+    padding:18px 18px 14px;
+    display:flex;flex-direction:column;gap:6px;
+    transform:translateX(-105%);
+    transition:transform .25s ease;
+  }
+  .editor.open{transform:none}
+  .editor h4{font:bold 16px Georgia,serif;margin-bottom:6px}
+  .editor label{font:bold 10px Arial,sans-serif;color:#555;margin-top:6px}
+  .editor input,.editor textarea{width:100%;border:1px solid #333;background:#fff;font:14px Georgia,serif;padding:6px 8px;outline:none}
+  .editor input:focus,.editor textarea:focus{border-color:var(--teal);box-shadow:0 0 0 2px #cfe3e6}
+  .editor input{font-weight:bold;font-size:15px;text-transform:none}
+  .editor .ed-time{font-size:11px;color:#888;margin-bottom:2px}
+  .news .row b,.v-title{text-transform:none}
+  .v-sub.blogmeta{max-height:5.2em;overflow-y:auto;line-height:1.45}
+  .editor textarea{flex:1;resize:none;line-height:1.6}
+  .ed-actions{display:flex;gap:10px;margin-top:8px}
+  .ed-actions button{font:bold 12px Verdana,sans-serif;padding:6px 18px;cursor:pointer;border:1px solid var(--teal);background:#fff;color:var(--teal)}
+  .ed-actions button.save{background:var(--teal);color:#fff}
+  .ed-msg{min-height:16px;color:var(--red);font-size:11px}
+
+  /* desktop: editor opens in the same spot as the art / song viewer */
+  @media(min-width:761px){
+    .editor{
+      top:52px;bottom:auto;left:auto;right:16px;
+      width:min(960px, calc(100vw - 660px));
+      min-width:520px;
+      max-width:calc(100vw - 32px);
+      height:calc(100vh - 68px);
+      height:calc(100dvh - 68px);
+      border:1px solid #333;
+      box-shadow:-8px 8px 0 rgba(0,0,0,.25);
+      transform:none;
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:opacity .15s ease, visibility .15s;
+    }
+    .editor.open{opacity:1;visibility:visible;pointer-events:auto}
+  }
+
+  /* ---------- FOOTER (the only hover color change) ---------- */
+  footer{
+    width:100%;margin-top:auto;
+    padding:5px 12px 6px;
+    border-top:1px solid #ddd;
+    text-align:center;color:#888;font-size:16px;line-height:1.4;background:#fff;
+  }
+  footer a:hover,footer .ownerlink:hover{color:var(--red)}
+  /* footer .ownerlink{cursor:pointer} */
+  footer .ownerlink{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+  /* ---------- MODE LABEL (top right) ---------- */
+  .mode-label{
+    position:fixed;
+    top:15px;
+    right:14px;
+    z-index:1500;
+    color:#000;
+    font:bold 12px Verdana,Tahoma,sans-serif;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    pointer-events:none;
+  }
+  footer .ownerlink.on{color:var(--red);font-weight:bold}
+
+  /* bigger viewer window (desktop): floats over the page, background may be covered */
+  @media(min-width:761px){
+    .viewer:not(.full){
+      position:fixed;
+      top:52px;
+      right:16px;
+      width:min(960px, calc(100vw - 660px));
+      min-width:520px;
+      max-width:calc(100vw - 32px);
+      z-index:900;
+      box-shadow:-8px 8px 0 rgba(0,0,0,.25);
+    }
+    .viewer:not(.full) .v-media img{
+      width:100%;
+      height:max(160px, calc(var(--avail,520px) - 160px));
+      object-fit:contain;
+    }
+    .viewer:not(.full) .v-post{font-size:17px}
+  }
+
+  /* everything fits one screen (desktop): scroll section far left, bigger, a bit lower */
+  @media(min-width:761px){
+    body{height:100vh;height:100dvh}
+    .hero{height:34vh;min-height:0}
+
+    .lower{
+      flex:1 1 0;
+      min-height:0;
+      max-width:none;
+      margin:-60px 0 0;
+      padding:0 24px 8px 28px;
+    }
+    .stage,.scrap{min-height:0}
+
+    .panel{
+      flex:0 0 600px;
+      margin-top:60px;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+    }
+    .panel h3{font-size:24px;margin-bottom:8px;margin-top:6px}
+    .panel h3 small{font-size:14px}
+
+    /* the list takes whatever height is left on the screen */
+    .news{flex:1 1 0;height:auto;min-height:110px;font-size:17px}
+    .news .grp{font-size:20px}
+    .news .row b{font-size:16px}
+    .news .row .th{width:46px;height:46px}
+    .news .row .by{font-size:10px}
+    .news .more{font-size:13px}
+    .news .plus{width:26px;height:26px;font-size:20px;line-height:24px}
+
+    .etc{margin-top:8px}
+    .etc select{width:110px;height:24px;font-size:13px}
+    .note{font-size:14px;margin-top:8px}
+  }
+
+  @media(max-width:760px){
+    .search{top:36px;left:auto;right:8px;width:62vw}
+    .ticker{top:74px;height:32px}
+    .ticker-track span{font-size:16px}
+    .lower{flex-direction:column;margin-top:-30px}
+    .panel{flex:none;width:100%}
+    .viewer{position:relative;right:auto;top:auto;margin-top:14px;box-shadow:none}
+    .stage.open .scrap{display:none}
+    .editor{width:100%}
+  }
+</style>
+</head>
+
+<body>
+
+<div class="logo">6dchair</div>
+
+<div class="search">
+  <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+    <circle cx="10" cy="10" r="6.5"/><line x1="15" y1="15" x2="21" y2="21"/>
+  </svg>
+  <input id="searchInput" type="text" placeholder="search songs / artworks / blog"
+         autocomplete="off" list="titleList" aria-label="Search">
+  <span class="clear" id="searchClear">✕</span>
+  <datalist id="titleList"></datalist>
+</div>
+
+<div class="ticker" aria-label="tagline">
+  <div class="ticker-track" id="tickerTrack">
+    <span>AI a.k.a aliɘn !ntɘlligɘnce can nvr copy .    i write guided by the 90sgrungegenz-restless-mentally-ill-unregulated-self-loathing spirit</span>
+  </div>
+</div>
+
+<div class="hero-wrap">
+  <div class="hero" id="hero"></div>
+  <div class="stickers" id="stickers"></div>
+</div>
+
+<div class="lower">
+
+  <div class="panel">
+    <h3>SOMɘART&amp;MINDVOMIT<small>hɘllo ! 6dchair desuuu. byɘ !</small></h3>
+
+    <div class="news" id="news"></div>
+
+    <div class="etc">
+      <select id="etc" aria-label="Socials">
+        <option value="">socials</option>
+        <option value="https://tiktok.com/@6dchair">tiktok</option>
+        <option value="https://youtube.com/@6dchair">YT</option>
+        <option value="https://soundcloud.com/6dchair">soundcloud</option>
+        <option value="https://instagram.com/6dchairr">instagram</option>
+      </select>
+    </div>
+
+    <!-- replace you@example.com (in both places) with your real email address -->
+    <div class="note">email: <a class="mail" href="mailto:6dinbox@gmail.com">6dinbox@gmail.com</a></div>
+  </div>
+
+  <!-- the vacant right side: opened art / songs / blog posts appear here -->
+  <div class="stage" id="stage">
+    <div class="scrap" id="scrap"></div>
+
+    <div class="viewer" id="viewer">
+      <div class="v-bar">
+        <span id="vNav"><span id="vPrev">‹ prev</span><span id="vNext">next ›</span></span>
+        <span class="vr"><span id="vFull" title="or double-click the media">full screen</span><span id="vClose">close ✕</span></span>
+      </div>
+      <div class="v-media" id="vMedia"></div>
+      <div class="v-cap">
+        <div class="v-title" id="vTitle"></div>
+        <div class="v-sub" id="vSub"></div>
+        <div class="v-actions" id="vActions"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2022 6dchair //
+  <!-- <a href="https://instagram.com/6dchairr" target="_blank" rel="noopener noreferrer">Instagram</a> · -->
+  <!-- <a href="https://tiktok.com/@6dchair" target="_blank" rel="noopener noreferrer">TikTok</a> ·
+  <a href="https://soundcloud.com/6dchair" target="_blank" rel="noopener noreferrer">SoundCloud</a> · -->
+  <!-- <a href="https://youtube.com/@6dchair" target="_blank" rel="noopener noreferrer">YouTube</a> -->
+  <span id="ownerBar"></span>
+</footer>
+
+<!-- ---------- BLOG EDITOR ---------- -->
+<aside class="editor" id="editor" aria-label="Blog editor">
+  <h4 id="edHead">new blog entry</h4>
+  <div class="ed-time" id="edTime"></div>
+  <label for="edTitle">title</label>
+  <input id="edTitle" type="text" placeholder="title name" maxlength="120">
+  <label for="edBody">entry</label>
+  <textarea id="edBody" placeholder="write something..."></textarea>
+  <div class="ed-msg" id="edMsg"></div>
+  <div class="ed-actions">
+    <button class="save" id="edSave" type="button">Save</button>
+    <button id="edCancel" type="button">Cancel</button>
+  </div>
+</aside>
+
+<!-- ARTWORKS come from generated-media.js (same folder, made by generate_media.py).
+     SONGS are typed in the script below.
+     Published blog posts come from blog-entries.js (optional, made with "export blog for site"). -->
+<script src="generated-media.js"></script>
+<script src="blog-entries.js" onerror="void 0"></script>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtDateTime = iso => iso ? new Date(iso).toLocaleString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) : '';
+const fmtDate = iso => new Date(iso).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
+
+/* ---------- OWNER MODE ----------
+   Click "owner" in the footer (or open index.html#owner and reload) and enter
+   the passcode. CHANGE THE PASSCODE BELOW. This is a soft lock, not real security. */
+const OWNER_PASS = 'changeme';
+const OWNER_KEY  = 'sixd_owner';
+const BLOG_KEY   = 'sixd_blog';
+
+let isOwner = false;
+try{ isOwner = localStorage.getItem(OWNER_KEY) === '1'; }catch(e){}
+
+if(location.hash === '#owner' && !isOwner){
+  const p = prompt('owner passcode');
+  if(p === OWNER_PASS){
+    isOwner = true;
+    try{ localStorage.setItem(OWNER_KEY,'1'); }catch(e){}
+  }
+}
+
+/* ---------- BLOG DATA ---------- */
+function loadBlog(){
+  const published = Array.isArray(window.BLOG_PUBLISHED) ? window.BLOG_PUBLISHED : [];
+  if(!isOwner) return published.slice();
+  try{
+    const raw = localStorage.getItem(BLOG_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return published.slice();
+}
+let BLOG = loadBlog();
+
+function saveBlog(){
+  try{ localStorage.setItem(BLOG_KEY, JSON.stringify(BLOG)); return true; }
+  catch(e){ return false; }
+}
+
+/* ---------- ITEM LISTS ---------- */
+const artItems   = () => ARTWORKS.map(a => ({...a, kind:'artwork', thumb:a.img}));
+const musicItems = () => SONGS.map(s => ({...s, kind:'song', thumb:s.cover}));
+const blogItems  = () => BLOG.map(b => ({...b, kind:'blog', year:String(b.date).slice(0,4)}))
+                             .sort((a,b)=> String(b.date).localeCompare(String(a.date)));
+const byYear = list => [...list].sort((a,b)=>String(b.year||'').localeCompare(String(a.year||'')));
+
+const GROUPS = {
+  art:   () => byYear(artItems()),
+  music: () => byYear(musicItems()),
+  blog:  () => blogItems()
+};
+const getAll = () => [...artItems(), ...musicItems(), ...blogItems()];
+
+const input = $('searchInput'), clearBtn = $('searchClear');
+const stage = $('stage'), vMedia = $('vMedia');
+
+/* ---------- SONGS (typed in by hand, not from generated-media.js) ----------
+   One line per song:
+     title = the name shown in the list
+     year  = used for sorting (newest first)
+     link  = SoundCloud, YouTube, TikTok or Spotify link, shown as a player on the right
+             (TikTok needs the full link ending in /video/<number>; leave '' if none yet)
+     embed:false = (optional) skip the built-in player and show a "play on YouTube" card that
+             opens the original, for videos whose owner blocks embedding
+   Keep a comma after every line. To add a song, copy a line and edit it. */
+const SONGS = [
+  {title:'camp crashing', link:'https://on.soundcloud.com/bbNb10XCZtgD21g5HV'},
+  {title:'tempera on poly', link:'https://www.tiktok.com/@6dchair/video/7684444379011910919?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
+  {title:'numbness party', link:'https://on.soundcloud.com/OGMOhCDTyi6GBR9aTD'},
+  {title:'but im a loser', link:'https://on.soundcloud.com/oeqFXjIQNGV3DF3Oll'},
+];
+const songLink = it => /^https?:\/\//i.test(it.link || '') ? it.link : '';
+
+function embedFor(url){
+  let m;
+  if((m = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/i)))
+    return {type:'yt', src:`https://www.youtube.com/embed/${m[1]}?autoplay=1&rel=0`};
+  if(/soundcloud\.com\//i.test(url))
+    return {type:'sc', src:`https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true&visual=true&show_comments=false`};
+  if((m = url.match(/tiktok\.com\/.*\/video\/(\d+)/i)))
+    return {type:'tt', src:`https://www.tiktok.com/embed/v2/${m[1]}`};
+  if((m = url.match(/open\.spotify\.com\/(track|album|playlist|episode)\/(\w+)/i)))
+    return {type:'sp', src:`https://open.spotify.com/embed/${m[1]}/${m[2]}`};
+  return null;
+}
+
+const YT_RE = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/i;
+
+function siteName(url){
+  if(/youtu\.?be/i.test(url))  return 'YouTube';
+  if(/soundcloud\.com/i.test(url)) return 'SoundCloud';
+  if(/tiktok\.com/i.test(url)) return 'TikTok';
+  if(/spotify\.com/i.test(url)) return 'Spotify';
+  try{ return new URL(url).hostname.replace(/^www\./,''); }catch(e){ return 'the original'; }
+}
+
+/* a big "play" card that opens the original in a new tab */
+function posterFor(url, title){
+  const yt  = url.match(YT_RE);
+  const img = yt ? `<img src="https://i.ytimg.com/vi/${yt[1]}/hqdefault.jpg" alt="${esc(title)}">` : '';
+  return `<a class="poster" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${img}<span class="play">▶ play on ${esc(siteName(url))} ↗</span></a>`;
+}
+
+/* ---------- RIGHT-SIDE STICKERS (below the header) ----------
+   same options as the hero list; x/y are in px or % inside the right-side area. */
+const SCRAP_STICKERS = [
+//   {src:'stickers/eye.png',         x:'60%',  y:'10px',  h:'230px', r:'-4deg'},
+//   {src:'stickers/cig_collage.png', x:'42%', y:'120px', h:'200px', r:'6deg'}
+];
+SCRAP_STICKERS.forEach(t=>{
+  const img = document.createElement('img');
+  img.className = 's';
+  img.src = t.src;
+  img.alt = '';
+  img.draggable = false;
+  img.style.cssText = `--x:${t.x};--y:${t.y};--h:${t.h};--r:${t.r}`;
+  $('scrap').appendChild(img);
+});
+
+/* ---------- HERO STICKERS ----------
+   Put transparent PNG/WebP cutouts in a "stickers" folder next to index.html.
+   x / y = position inside the hero, h = height, r = rotation. Add or remove lines freely. */
+const STICKERS = [
+   {src:'stickers/fckingglands.png',       x:'0%',  y:'-60%', h:'200%', r:'0deg'},
+     {src:'stickers/fckingglands.png',       x:'20%',  y:'-60%', h:'200%', r:'0deg'},
+  {src:'stickers/fckingglands.png', x:'60%', y:'-40%', h:'230%', r:'-190deg'},
+   {src:'stickers/fckingglands.png',       x:'50%',  y:'-60%', h:'200%', r:'0deg'},
+  {src:'stickers/fckingglands.png', x:'30%', y:'-50%', h:'210%', r:'-180deg'},
+  {src:'stickers/fckingglands.png', x:'80%', y:'-30%', h:'210%', r:'-190deg'},
+
+  // {src:'stickers/fckingglands.png', x:'60%', y:'-40%', h:'200%', r:'-190deg'},
+  // {src:'stickers/glands.png',       x:'0%',  y:'-40%', h:'200%', r:'0deg'},
+  // {src:'stickers/fckingglands.png', x:'30%', y:'-50%', h:'200%', r:'-180deg'},
+
+//   {src:'stickers/cig_collage.png', x:'60%', y:'-10%', h:'200%', r:'-8deg'},
+//   {src:'stickers/forehead.png',    x:'50%', y:'5%',   h:'90%',  r:'-3deg'},
+//   {src:'stickers/eye.png',         x:'30%', y:'-90%', h:'200%', r:'10deg'},
+//   {src:'stickers/startits.png',    x:'80%', y:'5%',   h:'88%',  r:'-6deg'},
+
+  /* 3 new ones: rename the files to yours */
+  {src:'stickers/new1.png', x:'14%', y:'30%', h:'110%', r:'7deg'},
+  {src:'stickers/new2.png', x:'72%', y:'0%',  h:'120%', r:'-5deg'},
+  {src:'stickers/new3.png', x:'88%', y:'25%', h:'100%', r:'10deg'}
+];
+
+STICKERS.forEach(s=>{
+  const img = document.createElement('img');
+  img.className = 'sticker';
+  img.src = s.src;
+  img.alt = '';
+  img.draggable = false;
+  img.style.cssText = `--x:${s.x};--y:${s.y};--h:${s.h};--r:${s.r}`;
+  $('stickers').appendChild(img);
+});
+
+/* ---------- SCROLL SECTION: blog / music / art (also the search results) ---------- */
+let newsLists = {};
+const expanded = new Set();   /* categories opened with "see all" */
+const PREVIEW = 3;            /* items shown per category in the scroll section */
+
+function getMatch(){
+  const words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const ok = it => !words.length ||
+    words.every(w => (it.title+' '+(it.year||'')+' '+(it.medium||'')+' '+(it.body||'')).toLowerCase().includes(w));
+  return {words, ok};
+}
+
+function curKey(){
+  const c = stage.classList.contains('open') && currentItems[currentIndex];
+  return c ? c.kind + ':' + (c.id || c.title) : '';
+}
+
+function rowHTML(it, g, i, openId){
+  const sub = g === 'blog' ? fmtDate(it.date) : '';
+  const th  = (it.thumb && it.kind !== 'song') ? `<img class="th" src="${it.thumb}" alt="" loading="lazy">` : '';
+  const act = openId === it.kind + ':' + (it.id || it.title) ? ' active' : '';
+  const cls = it.kind === 'song' ? ' song' : '';
+  return `<div class="row${cls}${act}" data-g="${g}" data-i="${i}">${th}<b>${esc(it.title)}</b>${sub ? `<span class="by">${esc(sub)}</span>` : ''}</div>`;
+}
+
+function renderNews(){
+  const {words, ok} = getMatch();
+  const openId = curKey();
+  newsLists = {};
+  let html = '', any = false;
+
+  ['blog','music','art'].forEach(g=>{
+    const items = GROUPS[g]().filter(ok);
+    newsLists[g] = items;
+    if(words.length && !items.length) return;
+    any = true;
+
+    const plus = (g === 'blog' && isOwner)
+      ? `<button class="plus" type="button" data-new="1" title="add a blog entry" aria-label="add a blog entry">+</button>` : '';
+    html += `<div class="grp" data-g="${g}" title="show all ${g}">${g}<span class="n">${items.length}${plus}</span></div>`;
+    if(!items.length) html += `<div class="none">nothing here yet.</div>`;
+
+    const shown = expanded.has(g) ? items : items.slice(0, PREVIEW);
+    shown.forEach((it,i)=>{ html += rowHTML(it, g, i, openId); });
+    if(items.length > PREVIEW){
+      html += expanded.has(g)
+        ? `<div class="more" data-all="${g}">‹ show less</div>`
+        : `<div class="more" data-all="${g}">see all ${items.length} ›</div>`;
+    }
+  });
+
+  if(!any) html = `<div class="none">no songs, artworks or posts match that. try another word.</div>`;
+  $('news').innerHTML = html;
+}
+
+/* "see all" expands a category inside the same scroll section */
+function toggleGroup(g){
+  expanded.has(g) ? expanded.delete(g) : expanded.add(g);
+  const top = $('news').scrollTop;
+  renderNews();
+  $('news').scrollTop = top;
+}
+
+$('news').addEventListener('click', e=>{
+  if(e.target.closest('[data-new]')){ openEditor(null); return; }
+  const all = e.target.closest('[data-all]');
+  if(all){ toggleGroup(all.dataset.all); return; }
+  const row = e.target.closest('.row');
+  if(row){ openItem(newsLists[row.dataset.g], +row.dataset.i); return; }
+  const grp = e.target.closest('.grp');
+  if(grp) toggleGroup(grp.dataset.g);
+});
+
+function refreshDatalist(){
+  $('titleList').innerHTML = getAll().map(i=>`<option value="${esc(i.title)}">`).join('');
+}
+
+$('etc').addEventListener('change', e=>{
+  if(e.target.value) window.open(e.target.value,'_blank','noopener');
+  e.target.selectedIndex = 0;
+});
+
+/* ---------- SEARCH: filters the scroll section ---------- */
+function runSearch(){
+  clearBtn.classList.toggle('on', input.value.trim() !== '');
+  renderNews();
+  $('news').scrollTop = 0;
+}
+input.addEventListener('input', runSearch);
+clearBtn.addEventListener('click', ()=>{ input.value=''; runSearch(); input.focus(); });
+
+/* ---------- VIEWER (right side) ---------- */
+let currentItems = [], currentIndex = 0;
+
+function openItem(list, i){
+  currentItems = list;
+  currentIndex = i;
+  showCurrentItem();
+}
+
+function showCurrentItem(){
+  const it = currentItems[currentIndex];
+  if(!it) return;
+
+  const songUrl = it.kind === 'song' ? songLink(it) : '';
+
+  if(it.kind === 'song'){
+    const em = (songUrl && it.embed !== false) ? embedFor(songUrl) : null;
+    /* only you will ever see this: YouTube will not play in a page opened as a plain file */
+    const fileHint = (em && em.type === 'yt' && location.protocol === 'file:')
+      ? `<div class="hint">testing from a file? YouTube only plays on a real address (http://localhost or your live site).</div>` : '';
+    vMedia.innerHTML = em
+      ? `<iframe class="embed ${em.type}" src="${esc(em.src)}" title="${esc(it.title)}"
+           allow="autoplay; encrypted-media; fullscreen; clipboard-write" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>${fileHint}`
+      : songUrl
+        ? posterFor(songUrl, it.title)                       /* embed off or unsupported: open the original */
+        : `<div class="v-post">link coming soon.</div>`;   /* no link yet */
+    $('vSub').textContent = '';
+  }else if(it.kind === 'artwork'){
+    vMedia.innerHTML = `<img src="${it.img}" alt="${esc(it.title)}">`;
+    $('vSub').textContent = it.medium || '';
+  }else{
+    vMedia.innerHTML = `<div class="v-post">${esc(it.body || '')}</div>`;
+    $('vSub').innerHTML = blogMeta(it);
+  }
+  $('vSub').classList.toggle('blogmeta', it.kind === 'blog');
+  $('vTitle').textContent = it.title;
+  $('vNav').style.visibility = currentItems.length > 1 ? 'visible' : 'hidden';
+
+  const act = $('vActions');
+  act.innerHTML = '';
+  if(songUrl){
+    act.innerHTML = `<a class="listen" href="${esc(songUrl)}" target="_blank" rel="noopener noreferrer">can’t play? open on ${esc(siteName(songUrl))} ↗</a>`;
+  }
+  if(it.kind === 'blog' && isOwner){
+    act.innerHTML = `<span id="vEdit">edit</span><span id="vDelete">delete</span>`;
+    $('vEdit').addEventListener('click', ()=>openEditor(it.id));
+    $('vDelete').addEventListener('click', ()=>{
+      if(!confirm('delete this entry?')) return;
+      BLOG = BLOG.filter(b=>b.id !== it.id);
+      saveBlog();
+      closeViewer();
+      afterBlogChange();
+    });
+  }
+
+  $('viewer').dataset.k = it.kind;
+  stage.classList.add('open');
+  fitViewer();
+  renderNewsKeepScroll();
+  if(window.innerWidth <= 760) stage.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function blogMeta(it){
+  const first = it.started
+    ? `started ${esc(fmtDateTime(it.started))} · saved ${esc(fmtDateTime(it.saved || it.date))}`
+    : `saved ${esc(fmtDateTime(it.date))}`;
+  const edits = (it.edits || []).map(e =>
+    `<div>edited: started ${esc(fmtDateTime(e.started))} · saved ${esc(fmtDateTime(e.saved))}</div>`).join('');
+  return `<div>${first}</div>${edits}`;
+}
+
+/* re-render the list (to mark the open row) without moving its scroll position */
+function renderNewsKeepScroll(){
+  const top = $('news').scrollTop;
+  renderNews();
+  $('news').scrollTop = top;
+}
+
+/* size the media to the free space on screen */
+function fitViewer(){
+  if(!stage.classList.contains('open')) return;
+  const mobile = window.innerWidth <= 760;
+  const avail = mobile ? Math.max(260, window.innerHeight - 40)
+                       : Math.max(300, window.innerHeight - 52 - 16);
+  $('viewer').style.setProperty('--avail', avail + 'px');
+  stage.style.minHeight = '';
+}
+window.addEventListener('resize', fitViewer);
+
+function closeViewer(){
+  if($('viewer').classList.contains('full')) toggleFull(false);
+  dx = dy = 0; applyPos();
+  stage.classList.remove('open');
+  stage.style.minHeight = '';
+  vMedia.innerHTML = '';          /* also stops any playing embed */
+  renderNewsKeepScroll();
+}
+
+const nextItem = () => { if(currentItems.length){ currentIndex = (currentIndex+1) % currentItems.length; showCurrentItem(); } };
+const previousItem = () => { if(currentItems.length){ currentIndex = (currentIndex-1+currentItems.length) % currentItems.length; showCurrentItem(); } };
+
+$('vClose').addEventListener('click', closeViewer);
+
+/* ---------- DRAG the viewer (desktop) ---------- */
+const viewerEl = $('viewer');
+let dx = 0, dy = 0, drag = null;
+const applyPos = () => { viewerEl.style.transform = (dx || dy) ? `translate(${dx}px,${dy}px)` : ''; };
+
+viewerEl.addEventListener('pointerdown', e=>{
+  if(window.innerWidth <= 760 || viewerEl.classList.contains('full') || e.button !== 0) return;
+  if(e.target.closest('#vNav,#vFull,#vClose,.v-actions,iframe,.v-post,.poster')) return;
+  drag = {x:e.clientX, y:e.clientY, dx, dy, moved:false};
+  e.preventDefault();
+});
+
+viewerEl.addEventListener('pointermove', e=>{
+  if(!drag) return;
+  const mx = e.clientX - drag.x, my = e.clientY - drag.y;
+  if(!drag.moved && Math.hypot(mx,my) < 4) return;
+  if(!drag.moved){
+    drag.moved = true;
+    viewerEl.setPointerCapture(e.pointerId);
+    viewerEl.classList.add('dragging');
+  }
+  let nx = drag.dx + mx, ny = drag.dy + my;
+
+  /* keep at least a corner of the viewer on screen */
+  const r = viewerEl.getBoundingClientRect();
+  const sx = nx - dx, sy = ny - dy;
+  const left = r.left + sx, top = r.top + sy;
+  if(left > window.innerWidth - 60) nx -= left - (window.innerWidth - 60);
+  if(left < 60 - r.width)           nx += (60 - r.width) - left;
+  if(top  > window.innerHeight - 40) ny -= top - (window.innerHeight - 40);
+  if(top  < 0)                       ny -= top;
+
+  dx = nx; dy = ny;
+  applyPos();
+});
+
+const endDrag = e=>{
+  if(!drag) return;
+  if(drag.moved){ try{ viewerEl.releasePointerCapture(e.pointerId); }catch(_){} }
+  drag = null;
+  viewerEl.classList.remove('dragging');
+};
+viewerEl.addEventListener('pointerup', endDrag);
+viewerEl.addEventListener('pointercancel', endDrag);
+
+/* ---------- FULL SCREEN (double-click the media, or the "full screen" link) ---------- */
+function toggleFull(force){
+  const on = typeof force === 'boolean' ? force : !viewerEl.classList.contains('full');
+  viewerEl.classList.toggle('full', on);
+  if(on){
+    if(viewerEl.requestFullscreen) viewerEl.requestFullscreen().catch(()=>{});
+  }else if(document.fullscreenElement){
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+viewerEl.addEventListener('dblclick', e=>{
+  if(e.target.closest('#vNav,#vFull,#vClose,.v-actions,.v-post,.poster')) return;
+  toggleFull();
+});
+$('vFull').addEventListener('click', ()=>toggleFull());
+document.addEventListener('fullscreenchange', ()=>{
+  if(!document.fullscreenElement) viewerEl.classList.remove('full');
+});
+$('vNext').addEventListener('click', nextItem);
+$('vPrev').addEventListener('click', previousItem);
+
+document.addEventListener('keydown', e=>{
+  if(!stage.classList.contains('open')) return;
+  const t = e.target;
+  if(t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable) return;
+  if(e.key === 'Escape'){ viewerEl.classList.contains('full') ? toggleFull(false) : closeViewer(); }
+  if(e.key === 'ArrowRight') nextItem();
+  if(e.key === 'ArrowLeft') previousItem();
+});
+
+let touchStartX = 0;
+$('viewer').addEventListener('touchstart', e=>{ touchStartX = e.changedTouches[0].screenX; }, {passive:true});
+$('viewer').addEventListener('touchend', e=>{
+  const d = e.changedTouches[0].screenX - touchStartX;
+  if(Math.abs(d) < 50) return;
+  d < 0 ? nextItem() : previousItem();
+}, {passive:true});
+
+/* ---------- BLOG EDITOR ---------- */
+const editor = $('editor'), edTitle = $('edTitle'), edBody = $('edBody'), edMsg = $('edMsg');
+let editingId = null;
+let editStart = null;
+
+function openEditor(id){
+  if(!isOwner) return;
+  editingId = id;
+  const b = id ? BLOG.find(x=>x.id === id) : null;
+  $('edHead').textContent = b ? 'edit entry' : 'new blog entry';
+  edTitle.value = b ? b.title : '';
+  edBody.value  = b ? b.body  : '';
+  edMsg.textContent = '';
+  editStart = new Date().toISOString();
+  $('edTime').textContent = (b ? 'edit started ' : 'started ') + fmtDateTime(editStart);
+  editor.classList.add('open');
+  document.body.classList.add('editing');
+  edTitle.focus();
+}
+function closeEditor(){
+  editor.classList.remove('open');
+  document.body.classList.remove('editing');
+  editingId = null;
+}
+
+function afterBlogChange(){
+  renderNewsKeepScroll();
+  refreshDatalist();
+}
+
+$('edSave').addEventListener('click', ()=>{
+  const title = edTitle.value.trim();
+  const body  = edBody.value.trim();
+  if(!title){ edMsg.textContent = 'give your entry a title first.'; edTitle.focus(); return; }
+
+  const wasEditing = editingId;
+  const now = new Date().toISOString();
+  if(wasEditing){
+    const b = BLOG.find(x=>x.id === wasEditing);
+    if(b){
+      b.title = title; b.body = body;
+      b.edits = b.edits || [];
+      b.edits.push({started: editStart || now, saved: now});
+    }
+  }else{
+    BLOG.push({id:'b'+Date.now(), title, body, date:now, started: editStart || now, saved: now, edits: []});
+  }
+
+  if(!saveBlog()){ edMsg.textContent = 'could not save in this browser.'; return; }
+  closeEditor();
+  afterBlogChange();
+
+  /* if that post is open on the right, refresh it with the new text */
+  const cur = currentItems[currentIndex];
+  if(wasEditing && stage.classList.contains('open') && cur && cur.id === wasEditing){
+    const list = blogItems();
+    const i = list.findIndex(b=>b.id === wasEditing);
+    if(i >= 0) openItem(list, i);
+  }
+});
+
+$('edCancel').addEventListener('click', closeEditor);
+editor.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeEditor(); });
+
+/* ---------- EXPORT (so visitors can see the posts) ---------- */
+function exportBlog(){
+  const txt = 'window.BLOG_PUBLISHED = ' + JSON.stringify(BLOG, null, 2) + ';\n';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt], {type:'text/javascript'}));
+  a.download = 'blog-entries.js';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+/* ---------- MODE LABEL (top right) ---------- */
+const modeLabel = document.createElement('div');
+modeLabel.className = 'mode-label';
+modeLabel.textContent = isOwner ? 'owner mode' : 'viewer mode';
+document.body.appendChild(modeLabel);
+
+/* ---------- OWNER BAR (footer) ---------- */
+if(isOwner){
+  $('ownerBar').innerHTML = ` · <span class="ownerlink on" id="ownerExport">export blog for site</span> · <span class="ownerlink on" id="ownerOut">owner: log out</span>`;
+  $('ownerExport').addEventListener('click', exportBlog);
+  $('ownerOut').addEventListener('click', ()=>{
+    try{ localStorage.removeItem(OWNER_KEY); }catch(e){}
+    location.hash = '';
+    location.reload();
+  });
+}else{
+  $('ownerBar').innerHTML = ` · <span class="ownerlink" id="ownerIn"> login if u r 6dchair</span>`;
+  $('ownerIn').addEventListener('click', ()=>{
+    if(prompt('owner passcode') === OWNER_PASS){
+      try{ localStorage.setItem(OWNER_KEY,'1'); }catch(e){}
+      location.reload();
+    }
+  });
+}
+
+/* ---------- TICKER: repeat the sentence so the loop is seamless ---------- */
+(function(){
+  const track = $('tickerTrack');
+  const first = track.firstElementChild;
+  for(let i = 0; i < 3; i++) track.appendChild(first.cloneNode(true));
+})();
+
+/* ---------- INIT ---------- */
+renderNews();
+refreshDatalist();
+</script>
+
+</body>
+</html>
