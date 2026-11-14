@@ -383,7 +383,7 @@
     .links{margin-top:16px;font-size:16px}
   }
 
-  @media(max-width:760px){
+  /* @media(max-width:760px){
     .search{top:36px;width:80vw}
     .ticker{top:74px;height:32px}
     .ticker-track span{font-size:16px}
@@ -391,7 +391,23 @@
     .panel{flex:none;width:100%}
     .viewer{position:relative;right:auto;top:auto;margin-top:14px;box-shadow:none}
     .stage.open .scrap{display:none}
-  }
+  } */
+  @media(max-width:760px){
+  .hero{height:26vh;min-height:170px}          /* shorter header, so the stickers shrink too */
+
+  .search{top:10px;left:50%;transform:translateX(-50%);width:70vw}
+  .search input{height:28px;font-size:12px;padding:0 26px 0 28px}
+  .search .mag{left:8px;top:6px;width:14px;height:14px}
+  .search .clear{top:5px;right:8px;font-size:12px}
+
+  .ticker{top:46px;height:28px}
+  .ticker-track span{font-size:14px}
+
+  .lower{flex-direction:column;margin-top:-30px}
+  .panel{flex:none;width:100%}
+  .viewer{position:relative;right:auto;top:auto;margin-top:14px;box-shadow:none}
+  .stage.open .scrap{display:none}
+}
 </style>
 </head>
 
