@@ -29,7 +29,6 @@
     display:flex;
     flex-direction:column;
     position:relative;
-    transition:padding-left .25s ease;
   }
 
   a{color:inherit;text-decoration:none}
@@ -63,31 +62,77 @@
 
   .logo{position:absolute;top:8px;left:10px;z-index:20;color:var(--paper);font-size:12px;font-family:Georgia,serif}
 
-  /* ---------- SEARCH ---------- */
-  .search{position:absolute;top:8px;left:auto;right:120px;z-index:20;width:min(460px,52vw)}
-  .search .mag{position:absolute;left:11px;top:8px;width:16px;height:16px;color:#e8f3f4;opacity:.7;pointer-events:none}
-  .search input{
-    width:100%;height:32px;
-    padding:0 30px 0 34px;
-    background:var(--teal);color:rgba(232,243,244,.85);
-    border:1px solid #6b8e93;
-    font:bold 14px Verdana,Tahoma,sans-serif;
-    outline:none;
-  }
-  .search input::placeholder{color:#e8f3f4;opacity:.55}
-  .search input:focus{border-color:var(--paper)}
-  /* hide the little dropdown triangle the browser adds for the suggestions list */
-  .search input::-webkit-calendar-picker-indicator,
-  .search input::-webkit-list-button{display:none !important;opacity:0}
-  .search .clear{position:absolute;right:10px;top:6px;color:#e8f3f4;cursor:pointer;display:none;font-size:14px}
-  .search .clear.on{display:block}
+  /* ---------- SEARCH (centered) ---------- */
+  /* ---------- SEARCH (centered) ---------- */
+.search{
+  position:absolute;
+  top:13px;
+  left:50%;
+  transform:translateX(-100%);
+  z-index:20;
+  width:min(600px,65vw);
+}
 
-  /* ---------- TICKER (runs non-stop, same row as the search bar) ---------- */
+.search .mag{
+  position:absolute;
+  left:11px;
+  top:8px;
+  width:16px;
+  height:16px;
+  color:#000;
+  opacity:.7;
+  pointer-events:none;
+}
+
+.search input{
+  width:100%;
+  height:32px;
+  padding:0 30px 0 34px;
+  background:#fff;
+  color:#000;
+  border:0;
+  border-bottom:1px solid #020202;
+  font:bold 14px Verdana,Tahoma,sans-serif;
+  outline:none;
+  box-sizing:border-box;
+}
+
+.search input::placeholder{
+  color:#555;
+  opacity:.50;
+}
+
+.search input:focus{
+  border-bottom:2px solid #020202;
+}
+
+/* hide the little dropdown triangle the browser adds for suggestions */
+.search input::-webkit-calendar-picker-indicator,
+.search input::-webkit-list-button{
+  display:none !important;
+  opacity:0;
+}
+
+.search .clear{
+  position:absolute;
+  right:10px;
+  top:6px;
+  color:#000;
+  cursor:pointer;
+  display:none;
+  font-size:14px;
+}
+
+.search .clear.on{
+  display:block;
+}
+
+  /* ---------- TICKER (runs non-stop, just below the search bar) ---------- */
   .ticker{
     position:absolute;
-    top:90px;      /* just below the search bar row */
+    top:100px;
     left:0;
-    right:0;       /* edge to edge */
+    right:0;
     height:40px;
     z-index:20;
     overflow:hidden;
@@ -102,7 +147,7 @@
   }
   .ticker-track span{
     padding-right:70px;
-    font:bold 30px Verdana,Tahoma,sans-serif;
+    font:bold 40px Verdana,Tahoma,sans-serif;
     color:var(--red);
     /* bright green outline: change #00ff3c for another color, 1.5px for thickness */
     text-shadow:
@@ -131,7 +176,7 @@
     padding-left:6px;
     font:bold 15px Arial,sans-serif;
     line-height:1.1;
-    margin-bottom:12px;
+    margin-bottom:20px;
   }
   .panel h3 small{display:block;font-size:9px;letter-spacing:.3px;color:#555;margin-top:2px;font-weight:normal}
 
@@ -143,13 +188,32 @@
     font-size:15px;
     line-height:1.45;
   }
-  .news::-webkit-scrollbar{width:14px}
-  .news::-webkit-scrollbar-track{background:#eee;border-radius:2px}
-  .news::-webkit-scrollbar-thumb{background:#999;border-radius:2px;border:2px solid #eee}
+
+  /* ----- scrollbar: wider rectangle, with a rectangle button at the top and the bottom ----- */
+  .news::-webkit-scrollbar{width:24px}
+  .news::-webkit-scrollbar-track{background:#eee;border-left:1px solid #ccc}
+  .news::-webkit-scrollbar-thumb{background:#999;border:3px solid #eee;border-radius:0}
   .news::-webkit-scrollbar-thumb:hover{background:#777}
+  .news::-webkit-scrollbar-button:single-button{
+    display:block;
+    width:24px;height:24px;
+    box-sizing:border-box;
+    background-color:#999;
+    background-repeat:no-repeat;
+    background-position:center;
+    border:3px solid #eee;
+  }
+  /* little arrows inside the two rectangles (delete the two background-image lines for plain rectangles) */
+  .news::-webkit-scrollbar-button:single-button:vertical:decrement{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Cpath d='M1 8L5 2L9 8Z' fill='%23000'/%3E%3C/svg%3E");
+  }
+  .news::-webkit-scrollbar-button:single-button:vertical:increment{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Cpath d='M1 2L5 8L9 2Z' fill='%23000'/%3E%3C/svg%3E");
+  }
   @supports not selector(::-webkit-scrollbar){
     .news{scrollbar-width:auto;scrollbar-color:#999 #eee}
   }
+
   .news .grp{
     font:bold 19px Georgia,serif;
     color:#111;
@@ -163,24 +227,22 @@
   }
   .news .grp:first-child{margin-top:0}
   .news .grp .n{font:13px Verdana,sans-serif;color:#999;display:flex;align-items:center}
-  .news .plus{
-    width:22px;height:22px;margin-left:8px;
-    background:var(--teal);color:#fff;border:0;cursor:pointer;
-    font:bold 17px/20px Verdana,sans-serif;text-align:center;
-  }
   .news .row{margin-top:7px;color:#777;cursor:pointer;display:flex;align-items:center;gap:10px}
   .news .row .th{width:34px;height:34px;object-fit:cover;flex:none;filter:grayscale(1) contrast(1.3)}
-  .news .row b{flex:1;min-width:0;font-family:Georgia,serif;color:var(--blue);font-size:16px}
+  .news .row .txt{flex:1;min-width:0}
+  .news .row b{font-family:Georgia,serif;color:var(--blue);font-size:16px;text-transform:none}
+  /* short description, dark gray, right after the title */
+  .news .row .desc{margin-left:8px;font:13px Verdana,Tahoma,sans-serif;color:#444;text-transform:none}
   .news .row.song b{text-decoration:underline;text-underline-offset:3px}
   .news .row.active b{color:var(--red);text-decoration:underline}
-  .news .row .by{font-size:12px;color:#aaa;white-space:nowrap}
   .news .none{margin-top:7px;color:#aaa}
   .news .more{margin-top:6px;color:var(--teal);font-size:13px;font-weight:bold;cursor:pointer}
 
-  .etc{border-left:5px solid #888;padding-left:6px}
-  .etc select{width:90px;height:20px;font:bold 11px Verdana,sans-serif;background:#fff;border:1px solid #333}
-  .note{margin-top:12px;color:#666;font-size:12px}
-  .note a.mail{text-decoration:underline;text-underline-offset:3px}
+  /* socials + email: plain underlined text */
+  /* .links{border-left:5px solid #888;padding-left:6px;margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:14px;color:#222} */
+  /* .links a{text-decoration:underline;text-underline-offset:3px} */
+  .links{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 36px;font-size:14px}
+  .links a{color:var(--blue);text-decoration:underline;text-underline-offset:3px}
 
   /* stage = the vacant right side; holds the decoration until something is opened */
   .stage{flex:1 1 0;min-width:0;position:relative}
@@ -197,10 +259,10 @@
     border:1px solid #333;
     background:#fff;
     padding:10px;
-    box-shadow:-6px 6px 0 rgba(0,0,0,.18);
+    /* box-shadow:-6px 6px 0 rgba(0,0,0,.18); */
     user-select:none;
   }
-  .viewer[data-k="blog"],.viewer[data-k="song"]{width:100%}
+  .viewer[data-k="song"]{width:100%}
   .stage.open .viewer{display:block}
   .v-bar,.v-media img,.v-cap{cursor:grab}
   .viewer.dragging,.viewer.dragging *{cursor:grabbing !important}
@@ -227,6 +289,7 @@
   .viewer.full .v-post{color:#eee;width:min(780px,100%);max-height:calc(100vh - 140px);font-size:17px}
   .viewer.full .v-cap{border-top-color:#333}
   .viewer.full .v-title{color:#fff}
+  .viewer.full .v-desc{color:#bbb}
 
   .v-bar{display:flex;justify-content:space-between;margin-bottom:8px;font-size:12px;font-weight:bold;color:var(--teal)}
   .v-bar span{cursor:pointer}
@@ -234,10 +297,11 @@
   .v-media img{display:block;max-width:100%;max-height:max(120px,calc(var(--avail,520px) - 160px));margin:0 auto;background:#000}
   .v-post{max-height:max(120px,calc(var(--avail,520px) - 160px));overflow-y:auto;font:15px/1.7 Georgia,serif;white-space:pre-wrap;color:#222;padding-right:6px}
   .v-cap{margin-top:10px;border-top:1px solid #ddd;padding-top:8px}
-  .v-title{font:bold 18px Georgia,serif;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .v-title{font:bold 18px Georgia,serif;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:none}
+  /* short description, dark gray, right after the title */
+  .v-desc{margin-left:10px;font:normal 13px Verdana,Tahoma,sans-serif;color:#444}
   .v-sub{font-size:12px;color:var(--grey);margin-top:2px}
   .v-actions{display:flex;gap:18px;margin-top:6px;font-size:12px;font-weight:bold}
-  .v-actions span{cursor:pointer;color:var(--teal)}
   .v-actions a.listen{background:var(--teal);color:#fff;padding:5px 14px;font-size:12px}
 
   .v-media .hint{font-size:11px;color:#888;margin-top:6px;white-space:normal}
@@ -256,54 +320,6 @@
   .v-media iframe.sp{height:min(380px,max(160px,calc(var(--avail,520px) - 160px)))}
   .v-media iframe.tt{width:auto;max-width:100%;aspect-ratio:9/16;height:max(300px,calc(var(--avail,520px) - 160px))}
 
-  /* ---------- BLOG EDITOR (slides in from the left) ---------- */
-  .editor{
-    position:fixed;top:0;bottom:0;left:0;
-    width:360px;max-width:100%;
-    background:#fff;
-    border-right:5px solid #777;
-    box-shadow:6px 0 24px rgba(0,0,0,.25);
-    z-index:1100;
-    padding:18px 18px 14px;
-    display:flex;flex-direction:column;gap:6px;
-    transform:translateX(-105%);
-    transition:transform .25s ease;
-  }
-  .editor.open{transform:none}
-  .editor h4{font:bold 16px Georgia,serif;margin-bottom:6px}
-  .editor label{font:bold 10px Arial,sans-serif;color:#555;margin-top:6px}
-  .editor input,.editor textarea{width:100%;border:1px solid #333;background:#fff;font:14px Georgia,serif;padding:6px 8px;outline:none}
-  .editor input:focus,.editor textarea:focus{border-color:var(--teal);box-shadow:0 0 0 2px #cfe3e6}
-  .editor input{font-weight:bold;font-size:15px;text-transform:none}
-  .editor .ed-time{font-size:11px;color:#888;margin-bottom:2px}
-  .news .row b,.v-title{text-transform:none}
-  .v-sub.blogmeta{max-height:5.2em;overflow-y:auto;line-height:1.45}
-  .editor textarea{flex:1;resize:none;line-height:1.6}
-  .ed-actions{display:flex;gap:10px;margin-top:8px}
-  .ed-actions button{font:bold 12px Verdana,sans-serif;padding:6px 18px;cursor:pointer;border:1px solid var(--teal);background:#fff;color:var(--teal)}
-  .ed-actions button.save{background:var(--teal);color:#fff}
-  .ed-msg{min-height:16px;color:var(--red);font-size:11px}
-
-  /* desktop: editor opens in the same spot as the art / song viewer */
-  @media(min-width:761px){
-    .editor{
-      top:52px;bottom:auto;left:auto;right:16px;
-      width:min(960px, calc(100vw - 660px));
-      min-width:520px;
-      max-width:calc(100vw - 32px);
-      height:calc(100vh - 68px);
-      height:calc(100dvh - 68px);
-      border:1px solid #333;
-      box-shadow:-8px 8px 0 rgba(0,0,0,.25);
-      transform:none;
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-      transition:opacity .15s ease, visibility .15s;
-    }
-    .editor.open{opacity:1;visibility:visible;pointer-events:auto}
-  }
-
   /* ---------- FOOTER (the only hover color change) ---------- */
   footer{
     width:100%;margin-top:auto;
@@ -311,47 +327,19 @@
     border-top:1px solid #ddd;
     text-align:center;color:#888;font-size:14px;line-height:1.4;background:#fff;
   }
-  footer a:hover,footer .ownerlink:hover{color:var(--red)}
-  /* footer .ownerlink{cursor:pointer} */
-  footer .ownerlink{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-
-  /* ---------- LOGIN BOX ---------- */
-  .login{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
-  .login[hidden]{display:none}
-  .login-box{background:#fff;border:1px solid #333;box-shadow:-8px 8px 0 rgba(0,0,0,.25);padding:18px;width:min(320px,100%);display:flex;flex-direction:column;gap:8px}
-  .login-box label{font:bold 12px Verdana,sans-serif;color:#555}
-  .login-box input{width:100%;border:1px solid #333;padding:8px 10px;font:15px Georgia,serif;outline:none}
-  .login-box input:focus{border-color:var(--teal);box-shadow:0 0 0 2px #cfe3e6}
-  .login-msg{min-height:16px;color:var(--red);font-size:11px}
-  .login-actions{display:flex;gap:10px}
-  .login-actions button{font:bold 12px Verdana,sans-serif;padding:6px 18px;cursor:pointer;border:1px solid var(--teal);background:#fff;color:var(--teal)}
-  .login-actions button.go{background:var(--teal);color:#fff}
-
-  /* ---------- MODE LABEL (top right) ---------- */
-  .mode-label{
-    position:fixed;
-    top:15px;
-    right:14px;
-    z-index:1500;
-    color:#000;
-    font:bold 12px Verdana,Tahoma,sans-serif;
-    text-decoration:underline;
-    text-underline-offset:3px;
-    pointer-events:none;
-  }
-  footer .ownerlink.on{color:var(--red);font-weight:bold}
+  footer a:hover{color:var(--red)}
 
   /* bigger viewer window (desktop): floats over the page, background may be covered */
   @media(min-width:761px){
     .viewer:not(.full){
       position:fixed;
-      top:52px;
-      right:16px;
-      width:min(960px, calc(100vw - 660px));
-      min-width:520px;
+      top:200px;
+      right:100px;
+      width:min(720px, calc(100vw - 660px));   /* window width: lower 720px to make it narrower */
+      min-width:460px;
       max-width:calc(100vw - 32px);
       z-index:900;
-      box-shadow:-8px 8px 0 rgba(0,0,0,.25);
+      /* box-shadow:-8px 8px 0 rgba(0,0,0,.25); */
     }
     .viewer:not(.full) .v-media img{
       width:100%;
@@ -371,7 +359,7 @@
       min-height:0;
       max-width:none;
       margin:-60px 0 0;
-      padding:0 24px 8px 28px;
+      padding:3px 24px 13px 70px;
     }
     .stage,.scrap{min-height:0}
 
@@ -382,7 +370,7 @@
       flex-direction:column;
       min-height:0;
     }
-    .panel h3{font-size:24px;margin-bottom:8px;margin-top:6px}
+    .panel h3{font-size:24px;margin-bottom:16px;margin-top:6px}
     .panel h3 small{font-size:14px}
 
     /* the list takes whatever height is left on the screen */
@@ -390,24 +378,19 @@
     .news .grp{font-size:20px}
     .news .row b{font-size:16px}
     .news .row .th{width:46px;height:46px}
-    .news .row .by{font-size:10px}
     .news .more{font-size:13px}
-    .news .plus{width:26px;height:26px;font-size:20px;line-height:24px}
 
-    .etc{margin-top:8px}
-    .etc select{width:110px;height:24px;font-size:13px}
-    .note{font-size:14px;margin-top:8px}
+    .links{margin-top:16px;font-size:16px}
   }
 
   @media(max-width:760px){
-    .search{top:36px;left:auto;right:8px;width:62vw}
+    .search{top:36px;width:80vw}
     .ticker{top:74px;height:32px}
     .ticker-track span{font-size:16px}
     .lower{flex-direction:column;margin-top:-30px}
     .panel{flex:none;width:100%}
     .viewer{position:relative;right:auto;top:auto;margin-top:14px;box-shadow:none}
     .stage.open .scrap{display:none}
-    .editor{width:100%}
   }
 </style>
 </head>
@@ -420,7 +403,7 @@
   <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
     <circle cx="10" cy="10" r="6.5"/><line x1="15" y1="15" x2="21" y2="21"/>
   </svg>
-  <input id="searchInput" type="text" placeholder="anything / keywords"
+  <input id="searchInput" type="text" placeholder="anything / keywords / キーワード"
          autocomplete="off" list="titleList" aria-label="Search">
   <span class="clear" id="searchClear">✕</span>
   <datalist id="titleList"></datalist>
@@ -428,7 +411,7 @@
 
 <div class="ticker" aria-label="tagline">
   <div class="ticker-track" id="tickerTrack">
-    <span>AI a.k.a aliɘn intɘlligɘnce could nvr copy .    i write guided by the 90sgrungegenz-restless-mentally-ill-unregulated-self-loathing spirit</span>
+    <span>currently ACCEPTING songwriting COMMISSIONS *** lyrics *** melody ***</span>
   </div>
 </div>
 
@@ -440,25 +423,19 @@
 <div class="lower">
 
   <div class="panel">
-    <h3>SOMɘART&amp;MINDVOMIT<small>hɘllo ! 6dchair desuuu. byɘ !</small></h3>
+    <h3>6dchair&amp;MINDVOMIT<small>hɘllo byɘ !</small></h3>
 
     <div class="news" id="news"></div>
 
-    <div class="etc">
-      <select id="etc" aria-label="Socials">
-        <option value="">socials</option>
-        <option value="https://tiktok.com/@6dchair">tiktok</option>
-        <option value="https://youtube.com/@6dchair">YT</option>
-        <option value="https://soundcloud.com/6dchair">soundcloud</option>
-        <option value="https://instagram.com/6dchairr">instagram</option>
-      </select>
+    <div class="links">
+      <!-- <a href="https://instagram.com/6dchairr" target="_blank" rel="noopener noreferrer">ig</a> -->
+      <a href="mailto:6dinbox@gmail.com">email</a>
+      <a href="https://youtube.com/@6dchair" target="_blank" rel="noopener noreferrer">yt</a>
+      <a href="https://tiktok.com/@6dchair" target="_blank" rel="noopener noreferrer">tiktok</a>
     </div>
-
-    <!-- replace you@example.com (in both places) with your real email address -->
-    <div class="note">email: <a class="mail" href="mailto:6dinbox@gmail.com">6dinbox@gmail.com</a></div>
   </div>
 
-  <!-- the vacant right side: opened art / songs / blog posts appear here -->
+  <!-- the vacant right side: opened art / songs appear here -->
   <div class="stage" id="stage">
     <div class="scrap" id="scrap"></div>
 
@@ -478,94 +455,50 @@
 </div>
 
 <footer>
-  © 2022 6dchair //
-  <!-- <a href="https://instagram.com/6dchairr" target="_blank" rel="noopener noreferrer">Instagram</a> · -->
-  <!-- <a href="https://tiktok.com/@6dchair" target="_blank" rel="noopener noreferrer">TikTok</a> ·
-  <a href="https://soundcloud.com/6dchair" target="_blank" rel="noopener noreferrer">SoundCloud</a> · -->
-  <!-- <a href="https://youtube.com/@6dchair" target="_blank" rel="noopener noreferrer">YouTube</a> -->
-  <span id="ownerBar"></span>
+  © 2026 6dchair
 </footer>
 
-<!-- ---------- BLOG EDITOR ---------- -->
-<aside class="editor" id="editor" aria-label="Blog editor">
-  <h4 id="edHead">new blog entry</h4>
-  <div class="ed-time" id="edTime"></div>
-  <label for="edTitle">title</label>
-  <input id="edTitle" type="text" placeholder="title name" maxlength="120">
-  <label for="edBody">entry</label>
-  <textarea id="edBody" placeholder="write something..."></textarea>
-  <div class="ed-msg" id="edMsg"></div>
-  <div class="ed-actions">
-    <button class="save" id="edSave" type="button">Save</button>
-    <button id="edCancel" type="button">Cancel</button>
-  </div>
-</aside>
-
-<!-- ---------- LOGIN BOX (replaces the browser's built-in prompt) ---------- -->
-<div class="login" id="login" hidden>
-  <form class="login-box" id="loginForm" autocomplete="off">
-    <label for="loginPass">owner passcode</label>
-    <input id="loginPass" type="password" autocomplete="current-password">
-    <div class="login-msg" id="loginMsg"></div>
-    <div class="login-actions">
-      <button type="submit" class="go">enter</button>
-      <button type="button" id="loginCancel">cancel</button>
-    </div>
-  </form>
-</div>
-
 <!-- ARTWORKS come from generated-media.js (same folder, made by generate_media.py).
-     SONGS are typed in the script below.
-     Published blog posts come from blog-entries.js (optional, made with "export blog for site"). -->
+     SONGS are typed in the script below. -->
 <script src="generated-media.js"></script>
-<script src="blog-entries.js" onerror="void 0"></script>
 
 <script>
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmtDateTime = iso => iso ? new Date(iso).toLocaleString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}) : '';
-const fmtDate = iso => new Date(iso).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});
 
-/* ---------- OWNER MODE ----------
-   Click the login link in the footer (or open index.html#owner) and enter
-   the passcode. CHANGE THE PASSCODE BELOW. This is a soft lock, not real security. */
-const OWNER_PASS = 'changeme';
-const OWNER_KEY  = 'sixd_owner';
-const BLOG_KEY   = 'sixd_blog';
+/* ---------- DESCRIPTIONS ----------
+   Every piece shows a short dark-gray description after its title.
+   Until you write a real one, this placeholder is shown.
+   Change it here, or set it to '' to hide it. */
+const DEFAULT_DESC = '';
+const descOf = it => (it.desc && String(it.desc).trim()) || DEFAULT_DESC;
 
-let isOwner = false;
-try{ isOwner = localStorage.getItem(OWNER_KEY) === '1'; }catch(e){}
-
-/* ---------- BLOG DATA ---------- */
-function loadBlog(){
-  const published = Array.isArray(window.BLOG_PUBLISHED) ? window.BLOG_PUBLISHED : [];
-  if(!isOwner) return published.slice();
-  try{
-    const raw = localStorage.getItem(BLOG_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  return published.slice();
-}
-let BLOG = loadBlog();
-
-function saveBlog(){
-  try{ localStorage.setItem(BLOG_KEY, JSON.stringify(BLOG)); return true; }
-  catch(e){ return false; }
-}
+/* Write your descriptions here, matched by EXACT title (capitals, spaces, punctuation).
+   Works for both art and music. One line per piece, keep the comma at the end.
+   Songs can also have  desc:'...'  right on their line in SONGS below, which wins over this list.
+   If a description has an apostrophe, wrap it in double quotes:  "it's a demo"  */
+const DESCS = {
+  'four': 'pencil/pen on paper, digital layering',
+  'is': 'pencil/pen on paper, digital layering',
+  'inborn': 'pencil/pen on paper, digital layering',
+  'sssmokele': 'pencil/pen on paper, digital layering',
+  'twoe': 'pencil/pen on paper, digital layering',
+  '33333': 'pencil/pen on paper, digital layering',
+  'wfore': 'digital art, digital layering',
+  // 'another artwork title': 'a short description',
+  // 'camp crashing': 'written on a bus ride home',
+};
 
 /* ---------- ITEM LISTS ---------- */
-const artItems   = () => ARTWORKS.map(a => ({...a, kind:'artwork', thumb:a.img}));
-const musicItems = () => SONGS.map(s => ({...s, kind:'song', thumb:s.cover}));
-const blogItems  = () => BLOG.map(b => ({...b, kind:'blog', year:String(b.date).slice(0,4)}))
-                             .sort((a,b)=> String(b.date).localeCompare(String(a.date)));
+const artItems   = () => ARTWORKS.map(a => ({...a, desc: a.desc || DESCS[a.title], kind:'artwork', thumb:a.img}));
+const musicItems = () => SONGS.map(s => ({...s, desc: s.desc || DESCS[s.title], kind:'song', thumb:s.cover}));
 const byYear = list => [...list].sort((a,b)=>String(b.year||'').localeCompare(String(a.year||'')));
 
 const GROUPS = {
-  art:   () => byYear(artItems()),
   music: () => byYear(musicItems()),
-  blog:  () => blogItems()
+  art:   () => byYear(artItems())
 };
-const getAll = () => [...artItems(), ...musicItems(), ...blogItems()];
+const getAll = () => [...musicItems(), ...artItems()];
 
 const input = $('searchInput'), clearBtn = $('searchClear');
 const stage = $('stage'), vMedia = $('vMedia');
@@ -573,17 +506,25 @@ const stage = $('stage'), vMedia = $('vMedia');
 /* ---------- SONGS (typed in by hand, not from generated-media.js) ----------
    One line per song:
      title = the name shown in the list
-     year  = used for sorting (newest first)
+     desc  = (optional) short description shown in gray after the title
+     year  = (optional) used for sorting, newest first
      link  = SoundCloud, YouTube, TikTok or Spotify link, shown as a player on the right
              (TikTok needs the full link ending in /video/<number>; leave '' if none yet)
      embed:false = (optional) skip the built-in player and show a "play on YouTube" card that
              opens the original, for videos whose owner blocks embedding
-   Keep a comma after every line. To add a song, copy a line and edit it. */
+   Keep a comma after every line. To add a song, copy a line and edit it.
+   Example with a description:
+     {title:'camp crashing', desc:'written on a bus', link:'https://...'}, */
 const SONGS = [
-  {title:'camp crashing', link:'https://on.soundcloud.com/bbNb10XCZtgD21g5HV'},
+  {title:'PURPLE HIGH', link:'https://soundcloud.com/6dchair/purplehigh?si=afff07be37414a16a0d4393c7acd2c60&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
   {title:'tempera on poly', link:'https://www.tiktok.com/@6dchair/video/7684444379011910919?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
-  {title:'numbness party', link:'https://on.soundcloud.com/OGMOhCDTyi6GBR9aTD'},
-  {title:'but im a loser', link:'https://on.soundcloud.com/oeqFXjIQNGV3DF3Oll'},
+  {title:'camp crashing', link:'https://soundcloud.com/6dchair/campcrashing?si=edeae2dc54694eed93728f1a6f3935f4&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+   {title:'numbness party', link:'https://soundcloud.com/6dchair/numbness_party_2022?si=68aa3c85410f4a2d849d5766a5bdfd23&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title:'purple sun high', link:'https://soundcloud.com/6dchair/purple_sun_high?si=199c3c941a214464a26c8d1391e294e8&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title:'coping-mechanism-script junkie', link:'https://soundcloud.com/6dchair/cmsjunkie?si=c6b25d209733418e94e2e3b8bc8072cb&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title: 'camp crashing (video)', link: 'https://www.tiktok.com/@6dchair/video/7702057100591058184?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
+  {title:'but im a loser', link:'https://soundcloud.com/6dchair/but_im_a_loser_2025?si=b536c4ad105b431396eda0def74e029d&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title:'canned cities & greens', link:'https://soundcloud.com/6dchair/cannedcitiesandgreens?si=afff07be37414a16a0d4393c7acd2c60&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
 ];
 const songLink = it => /^https?:\/\//i.test(it.link || '') ? it.link : '';
 
@@ -594,7 +535,7 @@ function embedFor(url){
   if(/soundcloud\.com\//i.test(url))
     return {type:'sc', src:`https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true&visual=true&show_comments=false`};
   if((m = url.match(/tiktok\.com\/.*\/video\/(\d+)/i)))
-    return {type:'tt', src:`https://www.tiktok.com/embed/v2/${m[1]}`};
+  return {type:'tt', src:`https://www.tiktok.com/player/v1/${m[1]}?autoplay=1&muted=0&loop=0&controls=1`};
   if((m = url.match(/open\.spotify\.com\/(track|album|playlist|episode)\/(\w+)/i)))
     return {type:'sp', src:`https://open.spotify.com/embed/${m[1]}/${m[2]}`};
   return null;
@@ -669,30 +610,33 @@ STICKERS.forEach(s=>{
   $('stickers').appendChild(img);
 });
 
-/* ---------- SCROLL SECTION: blog / music / art (also the search results) ---------- */
+/* ---------- SCROLL SECTION: music / art (also the search results) ---------- */
 let newsLists = {};
 const expanded = new Set();   /* categories opened with "see all" */
-const PREVIEW = 3;            /* items shown per category in the scroll section */
+const PREVIEW = {music:6, art:2};         /* items shown per category in the scroll section */
 
 function getMatch(){
   const words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const ok = it => !words.length ||
-    words.every(w => (it.title+' '+(it.year||'')+' '+(it.medium||'')+' '+(it.body||'')).toLowerCase().includes(w));
+    words.every(w => (it.title+' '+(it.desc||'')+' '+(it.year||'')+' '+(it.medium||'')).toLowerCase().includes(w));
   return {words, ok};
 }
 
 function curKey(){
   const c = stage.classList.contains('open') && currentItems[currentIndex];
-  return c ? c.kind + ':' + (c.id || c.title) : '';
+  return c ? c.kind + ':' + c.title : '';
 }
 
 function rowHTML(it, g, i, openId){
-  const sub = g === 'blog' ? fmtDate(it.date) : '';
-  const th  = (it.thumb && it.kind !== 'song') ? `<img class="th" src="${it.thumb}" alt="" loading="lazy">` : '';
-  const act = openId === it.kind + ':' + (it.id || it.title) ? ' active' : '';
-  const cls = it.kind === 'song' ? ' song' : '';
-  return `<div class="row${cls}${act}" data-g="${g}" data-i="${i}">${th}<b>${esc(it.title)}</b>${sub ? `<span class="by">${esc(sub)}</span>` : ''}</div>`;
+  const th   = (it.thumb && it.kind !== 'song') ? `<img class="th" src="${it.thumb}" alt="" loading="lazy">` : '';
+  const act  = openId === it.kind + ':' + it.title ? ' active' : '';
+  const cls  = it.kind === 'song' ? ' song' : '';
+  const desc = descOf(it);
+  return `<div class="row${cls}${act}" data-g="${g}" data-i="${i}">${th}<div class="txt"><b>${esc(it.title)}</b>${desc ? `<span class="desc">${esc(desc)}</span>` : ''}</div></div>`;
 }
+
+/* names shown as the section headings (the left side must stay music / art) */
+const LABELS = {music:'(some) songs', art:'(some) artworks'};
 
 function renderNews(){
   const {words, ok} = getMatch();
@@ -700,27 +644,25 @@ function renderNews(){
   newsLists = {};
   let html = '', any = false;
 
-  ['blog','music','art'].forEach(g=>{
+  ['music','art'].forEach(g=>{
     const items = GROUPS[g]().filter(ok);
     newsLists[g] = items;
     if(words.length && !items.length) return;
     any = true;
 
-    const plus = (g === 'blog' && isOwner)
-      ? `<button class="plus" type="button" data-new="1" title="add a blog entry" aria-label="add a blog entry">+</button>` : '';
-    html += `<div class="grp" data-g="${g}" title="show all ${g}">${g}<span class="n">${items.length}${plus}</span></div>`;
+    html += `<div class="grp" data-g="${g}" title="show all ${LABELS[g]}">${LABELS[g]}<span class="n">${items.length}</span></div>`;
     if(!items.length) html += `<div class="none">nothing here yet.</div>`;
 
-    const shown = expanded.has(g) ? items : items.slice(0, PREVIEW);
+    const shown = expanded.has(g) ? items : items.slice(0, PREVIEW[g]);
     shown.forEach((it,i)=>{ html += rowHTML(it, g, i, openId); });
-    if(items.length > PREVIEW){
+    if(items.length > PREVIEW[g]){
       html += expanded.has(g)
         ? `<div class="more" data-all="${g}">‹ show less</div>`
         : `<div class="more" data-all="${g}">see all ${items.length} ›</div>`;
     }
   });
 
-  if(!any) html = `<div class="none">no songs, artworks or posts match that. try another word.</div>`;
+  if(!any) html = `<div class="none">no songs or artworks match that. try another word.</div>`;
   $('news').innerHTML = html;
 }
 
@@ -733,7 +675,6 @@ function toggleGroup(g){
 }
 
 $('news').addEventListener('click', e=>{
-  if(e.target.closest('[data-new]')){ openEditor(null); return; }
   const all = e.target.closest('[data-all]');
   if(all){ toggleGroup(all.dataset.all); return; }
   const row = e.target.closest('.row');
@@ -745,11 +686,6 @@ $('news').addEventListener('click', e=>{
 function refreshDatalist(){
   $('titleList').innerHTML = getAll().map(i=>`<option value="${esc(i.title)}">`).join('');
 }
-
-$('etc').addEventListener('change', e=>{
-  if(e.target.value) window.open(e.target.value,'_blank','noopener');
-  e.target.selectedIndex = 0;
-});
 
 /* ---------- SEARCH: filters the scroll section ---------- */
 function runSearch(){
@@ -787,48 +723,24 @@ function showCurrentItem(){
         ? posterFor(songUrl, it.title)                       /* embed off or unsupported: open the original */
         : `<div class="v-post">link coming soon.</div>`;   /* no link yet */
     $('vSub').textContent = '';
-  }else if(it.kind === 'artwork'){
-    vMedia.innerHTML = `<img src="${it.img}" alt="${esc(it.title)}">`;
-    $('vSub').textContent = it.medium || '';
   }else{
-    vMedia.innerHTML = `<div class="v-post">${esc(it.body || '')}</div>`;
-    $('vSub').innerHTML = blogMeta(it);
+    vMedia.innerHTML = `<img src="${it.img}" alt="${esc(it.title)}">`;
+    // $('vSub').textContent = it.medium || '';
+    $('vSub').textContent = '';
   }
-  $('vSub').classList.toggle('blogmeta', it.kind === 'blog');
-  $('vTitle').textContent = it.title;
+  $('vTitle').textContent = it.title;      /* title only: the description stays in the list */
   $('vNav').style.visibility = currentItems.length > 1 ? 'visible' : 'hidden';
 
   const act = $('vActions');
-  act.innerHTML = '';
-  if(songUrl){
-    act.innerHTML = `<a class="listen" href="${esc(songUrl)}" target="_blank" rel="noopener noreferrer">can’t play? open on ${esc(siteName(songUrl))} ↗</a>`;
-  }
-  if(it.kind === 'blog' && isOwner){
-    act.innerHTML = `<span id="vEdit">edit</span><span id="vDelete">delete</span>`;
-    $('vEdit').addEventListener('click', ()=>openEditor(it.id));
-    $('vDelete').addEventListener('click', ()=>{
-      if(!confirm('delete this entry?')) return;
-      BLOG = BLOG.filter(b=>b.id !== it.id);
-      saveBlog();
-      closeViewer();
-      afterBlogChange();
-    });
-  }
+  act.innerHTML = songUrl
+    ? `<a class="listen" href="${esc(songUrl)}" target="_blank" rel="noopener noreferrer">open on ${esc(siteName(songUrl))} ↗</a>`
+    : '';
 
   $('viewer').dataset.k = it.kind;
   stage.classList.add('open');
   fitViewer();
   renderNewsKeepScroll();
   if(window.innerWidth <= 760) stage.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-function blogMeta(it){
-  const first = it.started
-    ? `started ${esc(fmtDateTime(it.started))} · saved ${esc(fmtDateTime(it.saved || it.date))}`
-    : `saved ${esc(fmtDateTime(it.date))}`;
-  const edits = (it.edits || []).map(e =>
-    `<div>edited: started ${esc(fmtDateTime(e.started))} · saved ${esc(fmtDateTime(e.saved))}</div>`).join('');
-  return `<div>${first}</div>${edits}`;
 }
 
 /* re-render the list (to mark the open row) without moving its scroll position */
@@ -843,7 +755,7 @@ function fitViewer(){
   if(!stage.classList.contains('open')) return;
   const mobile = window.innerWidth <= 760;
   const avail = mobile ? Math.max(260, window.innerHeight - 40)
-                       : Math.max(300, window.innerHeight - 52 - 16);
+                       : Math.max(300, (window.innerHeight - 68) * 0.8);   /* window height: 0.8 = 80%, lower it to make it shorter */
   $('viewer').style.setProperty('--avail', avail + 'px');
   stage.style.minHeight = '';
 }
@@ -908,6 +820,22 @@ const endDrag = e=>{
 viewerEl.addEventListener('pointerup', endDrag);
 viewerEl.addEventListener('pointercancel', endDrag);
 
+
+/* ---------- TIKTOK: unmute as soon as the player is ready ---------- */
+function tiktokUnmute(frame){
+  if(!frame || !frame.contentWindow) return;
+  frame.contentWindow.postMessage({type:'unMute', 'x-tiktok-player':true}, '*');
+  frame.contentWindow.postMessage({type:'play',   'x-tiktok-player':true}, '*');
+}
+window.addEventListener('message', e=>{
+  const d = e.data;
+  if(!d || typeof d !== 'object' || !d['x-tiktok-player']) return;
+  const frame = vMedia.querySelector('iframe.tt');
+  if(frame && frame.contentWindow === e.source && d.type === 'onPlayerReady') tiktokUnmute(frame);
+});
+
+
+
 /* ---------- FULL SCREEN (double-click the media, or the "full screen" link) ---------- */
 function toggleFull(force){
   const on = typeof force === 'boolean' ? force : !viewerEl.classList.contains('full');
@@ -946,125 +874,6 @@ $('viewer').addEventListener('touchend', e=>{
   d < 0 ? nextItem() : previousItem();
 }, {passive:true});
 
-/* ---------- BLOG EDITOR ---------- */
-const editor = $('editor'), edTitle = $('edTitle'), edBody = $('edBody'), edMsg = $('edMsg');
-let editingId = null;
-let editStart = null;
-
-function openEditor(id){
-  if(!isOwner) return;
-  editingId = id;
-  const b = id ? BLOG.find(x=>x.id === id) : null;
-  $('edHead').textContent = b ? 'edit entry' : 'new blog entry';
-  edTitle.value = b ? b.title : '';
-  edBody.value  = b ? b.body  : '';
-  edMsg.textContent = '';
-  editStart = new Date().toISOString();
-  $('edTime').textContent = (b ? 'edit started ' : 'started ') + fmtDateTime(editStart);
-  editor.classList.add('open');
-  document.body.classList.add('editing');
-  edTitle.focus();
-}
-function closeEditor(){
-  editor.classList.remove('open');
-  document.body.classList.remove('editing');
-  editingId = null;
-}
-
-function afterBlogChange(){
-  renderNewsKeepScroll();
-  refreshDatalist();
-}
-
-$('edSave').addEventListener('click', ()=>{
-  const title = edTitle.value.trim();
-  const body  = edBody.value.trim();
-  if(!title){ edMsg.textContent = 'give your entry a title first.'; edTitle.focus(); return; }
-
-  const wasEditing = editingId;
-  const now = new Date().toISOString();
-  if(wasEditing){
-    const b = BLOG.find(x=>x.id === wasEditing);
-    if(b){
-      b.title = title; b.body = body;
-      b.edits = b.edits || [];
-      b.edits.push({started: editStart || now, saved: now});
-    }
-  }else{
-    BLOG.push({id:'b'+Date.now(), title, body, date:now, started: editStart || now, saved: now, edits: []});
-  }
-
-  if(!saveBlog()){ edMsg.textContent = 'could not save in this browser.'; return; }
-  closeEditor();
-  afterBlogChange();
-
-  /* if that post is open on the right, refresh it with the new text */
-  const cur = currentItems[currentIndex];
-  if(wasEditing && stage.classList.contains('open') && cur && cur.id === wasEditing){
-    const list = blogItems();
-    const i = list.findIndex(b=>b.id === wasEditing);
-    if(i >= 0) openItem(list, i);
-  }
-});
-
-$('edCancel').addEventListener('click', closeEditor);
-editor.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeEditor(); });
-
-/* ---------- EXPORT (so visitors can see the posts) ---------- */
-function exportBlog(){
-  const txt = 'window.BLOG_PUBLISHED = ' + JSON.stringify(BLOG, null, 2) + ';\n';
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([txt], {type:'text/javascript'}));
-  a.download = 'blog-entries.js';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-/* ---------- MODE LABEL (top right) ---------- */
-const modeLabel = document.createElement('div');
-modeLabel.className = 'mode-label';
-modeLabel.textContent = isOwner ? 'owner mode' : 'viewer mode';
-document.body.appendChild(modeLabel);
-
-/* ---------- OWNER BAR (footer) ---------- */
-if(isOwner){
-  $('ownerBar').innerHTML = ` · <span class="ownerlink on" id="ownerExport">export blog for site</span> · <span class="ownerlink on" id="ownerOut">owner: log out</span>`;
-  $('ownerExport').addEventListener('click', exportBlog);
-  $('ownerOut').addEventListener('click', ()=>{
-    try{ localStorage.removeItem(OWNER_KEY); }catch(e){}
-    location.hash = '';
-    location.reload();
-  });
-}else{
-  $('ownerBar').innerHTML = ` · <span class="ownerlink" id="ownerIn"> login if u r 6dchair</span>`;
-  $('ownerIn').addEventListener('click', openLogin);
-}
-
-/* ---------- LOGIN BOX ---------- */
-function openLogin(){
-  $('login').hidden = false;
-  $('loginMsg').textContent = '';
-  $('loginPass').value = '';
-  $('loginPass').focus();
-}
-function closeLogin(){ $('login').hidden = true; }
-
-$('loginCancel').addEventListener('click', closeLogin);
-$('login').addEventListener('click', e=>{ if(e.target.id === 'login') closeLogin(); });
-document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !$('login').hidden) closeLogin(); });
-$('loginForm').addEventListener('submit', e=>{
-  e.preventDefault();
-  if($('loginPass').value === OWNER_PASS){
-    try{ localStorage.setItem(OWNER_KEY,'1'); }catch(_){}
-    location.hash = '';
-    location.reload();
-  }else{
-    $('loginMsg').textContent = 'wrong passcode.';
-    $('loginPass').select();
-  }
-});
-
 /* ---------- TICKER: repeat the sentence so the loop is seamless ---------- */
 (function(){
   const track = $('tickerTrack');
@@ -1075,7 +884,6 @@ $('loginForm').addEventListener('submit', e=>{
 /* ---------- INIT ---------- */
 renderNews();
 refreshDatalist();
-if(location.hash === '#owner' && !isOwner) openLogin();
 </script>
 
 </body>
