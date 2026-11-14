@@ -232,7 +232,7 @@
   .news .row .txt{flex:1;min-width:0}
   .news .row b{font-family:Georgia,serif;color:var(--blue);font-size:16px;text-transform:none}
   /* short description, dark gray, right after the title */
-  .news .row .desc{margin-left:8px;font:13px Verdana,Tahoma,sans-serif;color:#444;text-transform:none}
+  .news .row .desc{margin-left:8px;font:14px Verdana,Tahoma,sans-serif;color:#444;text-transform:none}
   .news .row.song b{text-decoration:underline;text-underline-offset:3px}
   .news .row.active b{color:var(--red);text-decoration:underline}
   .news .none{margin-top:7px;color:#aaa}
@@ -423,7 +423,7 @@
 <div class="lower">
 
   <div class="panel">
-    <h3>6dchair&amp;MINDVOMIT<small>hɘllo byɘ !</small></h3>
+    <h3>6dchairMINDVOMIT<small>hɘllo byɘ </small></h3>
 
     <div class="news" id="news"></div>
 
@@ -516,10 +516,11 @@ const stage = $('stage'), vMedia = $('vMedia');
    Example with a description:
      {title:'camp crashing', desc:'written on a bus', link:'https://...'}, */
 const SONGS = [
-  {title:'PURPLE HIGH', link:'https://soundcloud.com/6dchair/purplehigh?si=afff07be37414a16a0d4393c7acd2c60&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
-  {title:'tempera on poly', link:'https://www.tiktok.com/@6dchair/video/7684444379011910919?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
+  {title:'PURPLE HIGH', desc:'prbbly one of the calmest songs ive written', link:'https://soundcloud.com/6dchair/purplehigh?si=afff07be37414a16a0d4393c7acd2c60&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title:'tempera on poly', desc:'wrote this while nauseous, cold, & feeling like vomiting bc i was so hungry, but for some reason, i didnt want to stop', link:'https://www.tiktok.com/@6dchair/video/7684444379011910919?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
   {title:'camp crashing', link:'https://soundcloud.com/6dchair/campcrashing?si=edeae2dc54694eed93728f1a6f3935f4&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
    {title:'numbness party', link:'https://soundcloud.com/6dchair/numbness_party_2022?si=68aa3c85410f4a2d849d5766a5bdfd23&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
+  {title:'sunburn', desc:'2020; wrote it in the physics org office; i was feeling down & floating', link:'https://youtu.be/SS8lURMs7Ys'},
   {title:'purple sun high', link:'https://soundcloud.com/6dchair/purple_sun_high?si=199c3c941a214464a26c8d1391e294e8&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
   {title:'coping-mechanism-script junkie', link:'https://soundcloud.com/6dchair/cmsjunkie?si=c6b25d209733418e94e2e3b8bc8072cb&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing'},
   {title: 'camp crashing (video)', link: 'https://www.tiktok.com/@6dchair/video/7702057100591058184?is_from_webapp=1&sender_device=pc&web_id=7675179977377433104'},
